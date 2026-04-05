@@ -39,20 +39,20 @@ function StyleControls(props) {
   return (
     <div style={{ padding: '5px', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
       
-      {/* אזור הצבעים */}
-      <span style={{ marginLeft: '8px', color: '#1f2937', fontWeight: 'bold', fontSize: '14px' }}>צבע:</span>
-      <FormatButton onClick={() => props.onColorChange('black')} textColor="black">שחור</FormatButton>
-      <FormatButton onClick={() => props.onColorChange('#3b82f6')} textColor="#3b82f6">כחול</FormatButton>
-      <FormatButton onClick={() => props.onColorChange('#ef4444')} textColor="#ef4444">אדום</FormatButton>
+      {/*colors zone */}
+      <span style={{ marginLeft: '8px', color: '#1f2937', fontWeight: 'bold', fontSize: '14px' }}>color:</span>
+      <FormatButton onClick={() => props.onColorChange('black')} textColor="black">black</FormatButton>
+      <FormatButton onClick={() => props.onColorChange('#3b82f6')} textColor="#3b82f6">blue</FormatButton>
+      <FormatButton onClick={() => props.onColorChange('#ef4444')} textColor="#ef4444">red</FormatButton>
       
       {/* קו הפרדה עדין */}
       <span style={{ borderLeft: '2px solid #d1d5db', margin: '0 12px', height: '20px' }}></span>
       
       {/* אזור הגדלים */}
-      <span style={{ marginLeft: '8px', color: '#1f2937', fontWeight: 'bold', fontSize: '14px' }}>גודל:</span>
-      <FormatButton onClick={() => props.onSizeChange('16px')}>קטן</FormatButton>
-      <FormatButton onClick={() => props.onSizeChange('24px')}>רגיל</FormatButton>
-      <FormatButton onClick={() => props.onSizeChange('32px')}>גדול</FormatButton>
+      <span style={{ marginLeft: '8px', color: '#1f2937', fontWeight: 'bold', fontSize: '14px' }}>size:</span>
+      <FormatButton onClick={() => props.onSizeChange('16px')}>small</FormatButton>
+      <FormatButton onClick={() => props.onSizeChange('24px')}>medium</FormatButton>
+      <FormatButton onClick={() => props.onSizeChange('32px')}>large</FormatButton>
       
     </div>
   );
