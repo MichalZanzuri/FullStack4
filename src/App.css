@@ -1,184 +1,157 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
-
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-}
-
-.hero {
-  position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
-}
-
-#center {
+/* App.jsx */
+.app-container {
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
-}
-
-#next-steps {
-  display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-}
-
-#next-steps ul {
-  list-style: none;
+  height: 100vh;
+  margin: 0;
   padding: 0;
+  background-color: #f9fafb;
+  direction: rtl;
+}
+
+.top-bar {
+  padding: 10px 20px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.display-area {
+  flex: 1;
+  padding: 40px;
+  background-color: #ffffff;
+  overflow-y: auto;
+}
+
+.text-content {
+  white-space: pre-wrap;
+  min-height: 100%;
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+}
+
+.bottom-console {
+  width: 100%;
+  background-color: #e5e7eb;
+  padding: 10px 0 0 0;
+}
+
+.style-controls-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+/* keyboard styles */
+.keyboard-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #e5e7eb;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 8px;
+  direction: ltr;
+}
+
+.keyboard-row {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  width: 100%;
+}
+
+/* button styles */
+.keyboard-key {
+  height: 45px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  transition: all 0.05s;
+  box-shadow: 0 3px 0px rgba(0,0,0,0.2);
+}
+
+/* effect when button is pressed */
+.keyboard-key:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+/* FileMenu */
+.file-menu-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  direction: ltr;
+}
+
+.file-menu-input {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  outline: none;
+}
+
+.file-menu-button {
+  padding: 8px 15px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 3px 0px rgba(0,0,0,0.2);
+  transition: all 0.05s;
+  color: white; 
+}
+
+/* effect when button is pressed */
+.file-menu-button:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+/* save and open buttons */
+.btn-save {
+  background-color: #10b981; 
+}
+
+.btn-open {
+  background-color: #f59e0b; 
+}
+
+/* עיצוב לתו נבחר */
+.char-selected {
+  background-color: #fef08a;
+  border-bottom: 2px solid #eab308;
+  border-radius: 2px;
+}
+
+/* סרגל כפתורי פעולה */
+.edit-actions {
   display: flex;
   gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
+  margin-right: 20px;
+  border-right: 2px solid #d1d5db;
+  padding-right: 15px;
 }
 
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
+.action-btn {
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #ffffff;
+  box-shadow: 0 2px 0px rgba(0,0,0,0.1);
+  transition: all 0.1s;
 }
 
-.ticks {
-  position: relative;
-  width: 100%;
+.action-btn:active { transform: translateY(1px); box-shadow: none; }
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
-  }
-
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
-  }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
-  }
-}
+.btn-apply-sel { background-color: #34d399; color: white; } /* ירוק */
+.btn-apply-all { background-color: #fbbf24; color: white; } /* צהוב-כתום */

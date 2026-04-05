@@ -1,64 +1,114 @@
 import { useState } from 'react';
 import Keyboard from './components/Keyboard';
 import StyleControls from './components/StyleControls';
+import FileMenu from './components/FileMenu';
 import './App.css';
 
 function App() {
-  const [text, setText] = useState("");
+  // הטקסט הוא עכשיו מערך של אובייקטים: { char, color, size, selected }
+  const [textArray, setTextArray] = useState([]);
   const [language, setLanguage] = useState("he");
   const [textColor, setTextColor] = useState("#1f2937");
   const [textSize, setTextSize] = useState("24px");
+  const [fileName, setFileName] = useState("");
 
+  // הוספת תו חדש (לפי העיצוב הנוכחי בסרגל)
   const handleKeyPress = (char) => {
-    setText(prevText => prevText + char);
+    const newChar = {
+      char: char,
+      color: textColor,
+      size: textSize,
+      selected: false
+    };
+    setTextArray(prev => [...prev, newChar]);
   };
 
-  const handleDeleteChar = () => {
-    setText(prevText => prevText.slice(0, -1));
+  // מחיקת תו אחרון
+  const handleDeleteChar = () => setTextArray(prev => prev.slice(0, -1));
+  
+  // ניקוי כל המסך
+  const handleClearAll = () => setTextArray([]);
+
+  // בחירה/ביטול בחירה של תו ספציפי בלחיצה עליו
+  const toggleSelectChar = (index) => {
+    setTextArray(prev => prev.map((item, i) => 
+      i === index ? { ...item, selected: !item.selected } : item
+    ));
   };
 
-  const handleClearAll = () => {
-    setText("");
+  // בחירת כל הטקסט
+  const selectAll = () => {
+    setTextArray(prev => prev.map(item => ({ ...item, selected: true })));
+  };
+
+  // החלת העיצוב הנוכחי רק על מה שנבחר
+  const applyToSelected = () => {
+    setTextArray(prev => prev.map(item => 
+      item.selected ? { ...item, color: textColor, size: textSize, selected: false } : item
+    ));
+  };
+
+  // החלת העיצוב הנוכחי על כל הטקסט הקיים
+  const applyToAll = () => {
+    setTextArray(prev => prev.map(item => ({
+      ...item, color: textColor, size: textSize, selected: false
+    })));
+  };
+
+  // שמירה ופתיחה (משתמשים ב-JSON כי זה מערך אובייקטים)
+  const handleSave = () => {
+    if (!fileName) return alert("נא להזין שם קובץ!");
+    localStorage.setItem(fileName, JSON.stringify(textArray));
+    alert(`הקובץ ${fileName} נשמר!`);
+  };
+
+  const handleOpen = () => {
+    const saved = localStorage.getItem(fileName);
+    if (saved) {
+      setTextArray(JSON.parse(saved));
+    } else alert("קובץ לא נמצא");
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', margin: 0, padding: 0, backgroundColor: '#f9fafb', direction: 'rtl' }}>
-      
-      {/* אזור התצוגה (תופס את כל המקום הפנוי למעלה) */}
-      <div style={{ flex: 1, padding: '40px', backgroundColor: '#ffffff', overflowY: 'auto' }}>
-        <div style={{ 
-          color: textColor, 
-          fontSize: textSize, 
-          whiteSpace: 'pre-wrap', 
-          minHeight: '100%',
-          fontFamily: 'Arial, sans-serif',
-          lineHeight: '1.5'
-        }}>
-          {text}
+    <div className="app-container">
+      <div className="top-bar">
+        <FileMenu fileName={fileName} onFileNameChange={setFileName} onSave={handleSave} onOpen={handleOpen} />
+      </div>
+
+      <div className="display-area">
+        <div className="text-content">
+          {textArray.map((item, index) => (
+            <span 
+              key={index} 
+              onClick={() => toggleSelectChar(index)}
+              className={item.selected ? "char-selected" : ""}
+              style={{ color: item.color, fontSize: item.size, cursor: 'pointer' }}
+            >
+              {item.char}
+            </span>
+          ))}
         </div>
       </div>
 
-      {/* קונסולת השליטה התחתונה (עיצוב + מקלדת מאוחדים) */}
-      <div style={{ width: '100%', backgroundColor: '#e5e7eb', padding: '10px 0 0 0' }}>
-        
-        {/* שורת העיצוב יושבת ממש על המקלדת */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '5px' }}>
-          <StyleControls 
-            onColorChange={(color) => setTextColor(color)} 
-            onSizeChange={(size) => setTextSize(size)} 
-          />
+      <div className="bottom-console">
+        <div className="style-controls-wrapper">
+          <StyleControls onColorChange={setTextColor} onSizeChange={setTextSize} />
+          
+          <div className="edit-actions">
+            <button className="action-btn" onClick={selectAll}>בחר הכל</button>
+            <button className="action-btn btn-apply-sel" onClick={applyToSelected}>עדכן בחירה</button>
+            <button className="action-btn btn-apply-all" onClick={applyToAll}>עדכן הכל</button>
+          </div>
         </div>
 
-        {/* המקלדת */}
         <Keyboard 
           onKeyPress={handleKeyPress} 
           onDelete={handleDeleteChar}
-          onClear={handleClearAll} // מעבירים את הפונקציה למקלדת
+          onClear={handleClearAll}
           language={language}
           onChangeLanguage={setLanguage}
         />
       </div>
-
     </div>
   );
 }
