@@ -19,6 +19,20 @@ function StyleControls(props) {
         <option value="'Comic Sans MS', cursive">Comic Sans</option>
         <option value="Impact, sans-serif">Impact</option>
         <option value="'Lucida Console', monospace">Lucida Console</option>
+        {/* --- פונטים חדשים שהוספנו --- */}
+        <option value="'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">Segoe UI</option>
+        <option value="'Trebuchet MS', Helvetica, sans-serif">Trebuchet MS</option>
+        <option value="Helvetica, Arial, sans-serif">Helvetica</option>
+        <option value="Garamond, serif">Garamond</option>
+        <option value="'Palatino Linotype', 'Book Antiqua', Palatino, serif">Palatino</option>
+        <option value="'Courier', monospace">Courier</option>
+        <option value="'Brush Script MT', cursive">Brush Script</option>
+        
+        {/* --- פונטים שמותאמים גם לעברית קלאסית --- */}
+        <option value="'David', serif">David (דוד)</option>
+        <option value="'Frank Ruehl', serif">Frank Ruehl (פרנק ריל)</option>
+        <option value="'Miriam', sans-serif">Miriam (מרים)</option>
+        <option value="'Narkisim', sans-serif">Narkisim (נרקיסים)</option>
       </select>
 
       <input type="color" value={props.textColor} onChange={(e) => props.onColorChange(e.target.value)} className="color-picker" />
