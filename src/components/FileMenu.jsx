@@ -11,12 +11,15 @@ function FileMenu(props) {
         className="file-menu-input"
       />
       
-      {/* שימי לב איך הוספנו 2 קלאסים שונים לכל כפתור: אחד לעיצוב הכללי ואחד לצבע */}
-      <button className="file-menu-button btn-save" onClick={props.onSave}>
+      <button className="file-menu-button btn-save" onClick={props.onSave} title="save current file">
         Save
       </button>
+
+      <button className="file-menu-button" style={{ backgroundColor: '#0ea5e9' }} onClick={props.onSaveAs} title="save file with a new name">
+        Save As...
+      </button>
       
-      <button className="file-menu-button btn-open" onClick={props.onOpen}>
+      <button className="file-menu-button btn-open" onClick={props.onOpen} title="open a existing file">
         Open
       </button>
     </div>

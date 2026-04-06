@@ -155,3 +155,65 @@
 
 .btn-apply-sel { background-color: #34d399; color: white; } /* ירוק */
 .btn-apply-all { background-color: #fbbf24; color: white; } /* צהוב-כתום */
+
+.top-bar-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.search-replace-bar {
+  display: flex;
+  gap: 5px;
+  background: #f3f4f6;
+  padding: 5px;
+  border-radius: 8px;
+}
+
+.search-replace-bar input {
+  width: 80px;
+  padding: 5px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.search-replace-bar button {
+  padding: 5px 10px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.undo-btn {
+  background: #6b7280;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.undo-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.style-controls-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  direction: ltr;
+}
+
+.font-select { padding: 5px; border-radius: 4px; }
+.color-picker { width: 30px; height: 30px; border: none; padding: 0; cursor: pointer; }
+.size-controls { display: flex; align-items: center; gap: 5px; background: white; padding: 2px 8px; border-radius: 4px; border: 1px solid #d1d5db; }
+.size-display { font-weight: bold; min-width: 20px; text-align: center; }
+.format-btn { background: white; border: 1px solid #d1d5db; border-radius: 4px; padding: 4px 10px; cursor: pointer; font-weight: bold; }
+.format-btn.active { background: #3b82f6; color: white; border-color: #2563eb; }

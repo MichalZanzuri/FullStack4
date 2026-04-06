@@ -7,14 +7,14 @@ function Keyboard(props) {
       ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
       ["'", '-', 'ק', 'ר', 'א', 'ט', 'ו', 'ן', 'ם', 'פ'],
       ['ש', 'ד', 'ג', 'כ', 'ע', 'י', 'ח', 'ל', 'ך', 'ף'],
-      ['ז', 'ס', 'ב', 'ה', 'נ', 'מ', 'צ', 'ת', 'ץ', 'DEL'],
+      ['DEL WORD','ז', 'ס', 'ב', 'ה', 'נ', 'מ', 'צ', 'ת', 'ץ', , 'DEL'], 
       ['CLEAR', '?123', 'EMOJI', 'LANG', 'SPACE', '.', 'ENTER']
     ],
     en: [
       ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
       ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
       ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
-      ['z', 'x', 'c', 'v', 'b', 'n', 'm', 'DEL'],
+      ['DEL WORD','z', 'x', 'c', 'v', 'b', 'n', 'm', , 'DEL'],
       ['CLEAR', '?123', 'EMOJI', 'LANG', 'SPACE', '.', 'ENTER']
     ],
     symbols1: [
@@ -44,11 +44,12 @@ function Keyboard(props) {
 
   const renderKeyContent = (char) => {
     if (char === 'DEL') return '⌫';
+    if (char === 'DEL WORD') return 'clear word';
     if (char === 'LANG') return '🌐';
     if (char === 'EMOJI') return '☺'; 
     if (char === 'SPACE') return props.language === 'he' ? 'עברית' : (props.language === 'en' ? 'English' : 'Space');
     if (char === 'ENTER') return '↵';
-    if (char === 'CLEAR') return 'נקה';
+    if (char === 'CLEAR') return 'clear all';
     if (char === 'ABC') return 'ABC';
     if (char === '=\\<') return '= \\ <';
     return char;
@@ -56,6 +57,7 @@ function Keyboard(props) {
 
   const handleKeyClick = (char) => {
     if (char === 'DEL') props.onDelete();
+    else if (char === 'DEL WORD') props.onDeleteWord(); // הפעלת הפונקציה החדשה
     else if (char === 'CLEAR') props.onClear();
     else if (char === 'LANG') props.onChangeLanguage(props.language === 'he' ? 'en' : 'he');
     else if (char === 'EMOJI') props.onChangeLanguage('emoji');
@@ -73,7 +75,6 @@ function Keyboard(props) {
         <div key={rowIndex} className="keyboard-row">
           
           {row.map((char, charIndex) => {
-            // כאן נשאר רק מה שדינמי!
             let flexValue = 1;
             let bgColor = '#ffffff';
             let textColor = '#1f2937';
@@ -81,7 +82,10 @@ function Keyboard(props) {
             if (char === 'SPACE') flexValue = 3.5;
             if (char === 'ENTER') { bgColor = '#3b82f6'; textColor = 'white'; flexValue = 1.2; }
             if (char === 'CLEAR') { bgColor = '#ef4444'; textColor = 'white'; flexValue = 1.2; }
-            if (['DEL', 'LANG', 'EMOJI', '?123', '=\\<', 'ABC'].includes(char)) { bgColor = '#d1d5db'; flexValue = 1.1; }
+            if (['DEL', 'DEL WORD', 'LANG', 'EMOJI', '?123', '=\\<', 'ABC'].includes(char)) { 
+              bgColor = '#d1d5db'; 
+              flexValue = (char === 'DEL WORD') ? 1.6 : 1.1; // מרווח טיפה יותר גדול לכפתור מחק מילה
+            }
 
             return (
               <button

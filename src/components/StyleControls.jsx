@@ -1,59 +1,39 @@
 import React from 'react';
 
 function StyleControls(props) {
-  
-  // יצרנו רכיב פנימי קטן כדי לא לשכפל את העיצוב לכל כפתור
-  const FormatButton = ({ onClick, children, textColor = '#1f2937' }) => (
-    <button
-      onMouseDown={(e) => {
-        e.currentTarget.style.transform = 'translateY(2px)';
-        e.currentTarget.style.boxShadow = 'none';
-      }}
-      onMouseUp={(e) => {
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = '0 3px 0px rgba(0,0,0,0.2)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = '0 3px 0px rgba(0,0,0,0.2)';
-      }}
-      onClick={onClick}
-      style={{
-        padding: '8px 12px',
-        margin: '0 4px',
-        fontSize: '14px',
-        fontWeight: 'bold',
-        color: textColor,
-        backgroundColor: '#ffffff',
-        border: 'none',
-        borderRadius: '8px', // פינות מעוגלות כמו במקלדת
-        cursor: 'pointer',
-        transition: 'all 0.05s',
-        boxShadow: '0 3px 0px rgba(0,0,0,0.2)' // ההצללה של המקלדת
-      }}
-    >
+  const FormatButton = ({ onClick, children, isActive }) => (
+    <button onClick={onClick} className={isActive ? "format-btn active" : "format-btn"}>
       {children}
     </button>
   );
 
   return (
-    <div style={{ padding: '5px', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', direction: 'ltr'}}>
-      
-      {/*colors zone */}
-      <span style={{ marginLeft: '8px', color: '#1f2937', fontWeight: 'bold', fontSize: '14px' }}>color:</span>
-      <FormatButton onClick={() => props.onColorChange('black')} textColor="black">black</FormatButton>
-      <FormatButton onClick={() => props.onColorChange('#3b82f6')} textColor="#3b82f6">blue</FormatButton>
-      <FormatButton onClick={() => props.onColorChange('#ef4444')} textColor="#ef4444">red</FormatButton>
-      
-      {/* קו הפרדה עדין */}
-      <span style={{ borderLeft: '2px solid #d1d5db', margin: '0 12px', height: '20px' }}></span>
-      
-      {/* אזור הגדלים */}
-      <span style={{ marginRight: '8px', color: '#1f2937', fontWeight: 'bold', fontSize: '14px' }}>size:</span>
-      <FormatButton onClick={() => props.onSizeChange('16px')}>small</FormatButton>
-      <FormatButton onClick={() => props.onSizeChange('24px')}>medium</FormatButton>
-      <FormatButton onClick={() => props.onSizeChange('32px')}>large</FormatButton>
-      
+    <div className="style-controls-container">
+      <select value={props.fontFamily} onChange={(e) => props.onFontChange(e.target.value)} className="font-select">
+        <option value="Arial, sans-serif">Arial</option>
+        <option value="'Courier New', Courier, monospace">Courier New</option>
+        <option value="'Times New Roman', Times, serif">Times New Roman</option>
+        <option value="Tahoma, sans-serif">Tahoma</option>
+        <option value="Verdana, sans-serif">Verdana</option>
+        <option value="Georgia, serif">Georgia</option>
+        <option value="'Comic Sans MS', cursive">Comic Sans</option>
+        <option value="Impact, sans-serif">Impact</option>
+        <option value="'Lucida Console', monospace">Lucida Console</option>
+      </select>
+
+      <input type="color" value={props.textColor} onChange={(e) => props.onColorChange(e.target.value)} className="color-picker" />
+
+      <div className="size-controls">
+        <button onClick={() => props.onSizeChange(-2)}>-</button>
+        <span className="size-display">{props.textSize}</span>
+        <button onClick={() => props.onSizeChange(2)}>+</button>
+      </div>
+
+      <div className="format-group">
+        <FormatButton isActive={props.isBold} onClick={props.toggleBold}>B</FormatButton>
+        <FormatButton isActive={props.isItalic} onClick={props.toggleItalic}>I</FormatButton>
+        <FormatButton isActive={props.isUnderline} onClick={props.toggleUnderline}>U</FormatButton>
+      </div>
     </div>
   );
 }
