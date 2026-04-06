@@ -236,37 +236,40 @@ function App() {
               />
               
               {/* שורה 2: בלוק חיפוש והחלפה (מתחת לקבצים) */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', padding: '6px 12px', backgroundColor: '#fef9c3', borderRadius: '8px', border: '1px solid #fde047', alignSelf: 'flex-start' }}>
+              {/* שורה 2: בלוק חיפוש והחלפה (מתחת לקבצים) */}
+              {/* החזרנו את direction: 'rtl' כדי שהטקסט יופיע משמאל והכפתור מימין */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '8px 12px', backgroundColor: '#fef9c3', borderRadius: '8px', border: '1px solid #fde047', width: '390px', alignSelf: 'flex-start', boxSizing: 'border-box', direction: 'rtl' }}>
                 
-                {/* שורת חיפוש */}
-                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                  <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#854d0e', width: '45px' }}>search:</span>
+                {/* שורת חיפוש - סדר: טקסט (שמאל) -> אינפוט (אמצע) -> כפתור (ימין) */}
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#854d0e', flex: '0 0 60px', textAlign: 'left' }}>search:</span>
                   <input 
-                    placeholder="character..." 
+                    placeholder="char" 
                     value={searchChar} 
                     onChange={(e) => setSearchChar(e.target.value)} 
                     maxLength="1" 
                     className="file-menu-input" 
-                    style={{ width: '45px', textAlign: 'center', borderColor: '#facc15', padding: '4px' }} 
+                    style={{ flex: 1, textAlign: 'center', borderColor: '#facc15', padding: '0 8px', height: '32px', boxSizing: 'border-box' }} 
                   />
-                  <button className="file-menu-button" style={{ backgroundColor: '#3b82f6', padding: '4px 10px', fontSize: '12px' }} onClick={handleSearch}>חפש</button>
+                  <button className="file-menu-button" style={{ backgroundColor: '#3b82f6', padding: '0 15px', fontSize: '13px', flex: '0 0 85px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={handleSearch}>search</button>
                 </div>
 
-                {/* שורת החלפה */}
-                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                  <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#854d0e', width: '45px' }}>change:</span>
+                {/* שורת החלפה - סדר: טקסט (שמאל) -> אינפוט (אמצע) -> כפתור (ימין) */}
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#854d0e', flex: '0 0 60px', textAlign: 'left' }}>change:</span>
                   <input 
-                    placeholder="character..." 
+                    placeholder="char" 
                     value={replaceChar} 
                     onChange={(e) => setReplaceChar(e.target.value)} 
                     maxLength="1" 
                     className="file-menu-input" 
-                    style={{ width: '45px', textAlign: 'center', borderColor: '#facc15', padding: '4px' }} 
+                    style={{ flex: 1, textAlign: 'center', borderColor: '#facc15', padding: '0 8px', height: '32px', boxSizing: 'border-box' }} 
                   />
-                  <button className="file-menu-button" style={{ backgroundColor: '#2563eb', padding: '4px 10px', fontSize: '12px' }} onClick={handleReplace}>החלף</button>
+                  <button className="file-menu-button" style={{ backgroundColor: '#2563eb', padding: '0 15px', fontSize: '13px', flex: '0 0 85px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={handleReplace}>change</button>
                 </div>
 
               </div>
+
             </div>
           </div>
 
