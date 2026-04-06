@@ -218,7 +218,7 @@
 .format-btn { background: white; border: 1px solid #d1d5db; border-radius: 4px; padding: 4px 10px; cursor: pointer; font-weight: bold; }
 .format-btn.active { background: #3b82f6; color: white; border-color: #2563eb; }
 
-/* סביבת העבודה המרובת חלונות (חלק ג') */
+/* סביבת העבודה המרובת חלונות */
 .windows-workspace {
   flex: 1;
   display: flex;

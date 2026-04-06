@@ -5,7 +5,6 @@ import FileMenu from './components/FileMenu';
 import './App.css';
 
 function App() {
-  // --- חלק ג': ניהול חלונות מרובים ---
   // כל חלון מחזיק את הטקסט, ההיסטוריה ושם הקובץ שלו
   const [windows, setWindows] = useState([
     { id: Date.now(), fileName: "", textArray: [], history: [], redoStack: [] }
@@ -13,11 +12,11 @@ function App() {
   const [activeWindowId, setActiveWindowId] = useState(windows[0].id);
 
   const [language, setLanguage] = useState("he");
-  const [fileToOpen, setFileToOpen] = useState(""); // הסטייט של תיבת הייבוא
+  const [fileToOpen, setFileToOpen] = useState("");
   const [searchChar, setSearchChar] = useState("");
   const [replaceChar, setReplaceChar] = useState("");
 
-  // כלי העיצוב (גלובליים, משפיעים על החלון הפעיל)
+  // כלי העיצוב 
   const [textColor, setTextColor] = useState("#000000");
   const [textSize, setTextSize] = useState(24);
   const [fontFamily, setFontFamily] = useState("Arial, sans-serif");
@@ -39,7 +38,7 @@ function App() {
     updateActiveWindow({
       textArray: newArr,
       history: newHistory,
-      redoStack: [] // איפוס Redo
+      redoStack: [] // reset Redo
     });
   };
 
@@ -52,24 +51,24 @@ function App() {
 
   const handleCloseWindow = (idToClose, e) => {
     e.stopPropagation(); // מונע בחירה של החלון כשלוחצים על ה-X
-    if (windows.length === 1) return alert("אי אפשר לסגור את החלון האחרון!");
+    if (windows.length === 1) return alert("cannot close the last window!"); // לא מאפשר לסגור את החלון האחרון
     
     // מציאת החלון שאנחנו רוצים לסגור
     const winToClose = windows.find(w => w.id === idToClose);
     
-    // ההצעה לשמור את הקובץ לפני הסגירה (הדרישה של חלק ג')
-    const confirmSave = window.confirm(`האם תרצי לשמור את "${winToClose.fileName || 'מסמך ללא שם'}" לפני הסגירה?`);
+    // ההצעה לשמור את הקובץ לפני הסגירה 
+    const confirmSave = window.confirm(`do you want to save "${winToClose.fileName || 'Untitled'}" before closing?`);
     
     if (confirmSave) {
       let saveName = winToClose.fileName;
       // אם אין לקובץ שם, נבקש מהמשתמש להזין אחד
       if (!saveName) {
-        saveName = prompt("הכניסי שם לשמירת הקובץ:", "מסמך_שנסגר");
+        saveName = prompt("enter a name for the file:", "documento");
       }
-      // מבצעים את השמירה ל-Local Storage
+      // save to Local Storage
       if (saveName) {
         localStorage.setItem(saveName, JSON.stringify(winToClose.textArray));
-        alert(`הקובץ "${saveName}" נשמר בהצלחה!`);
+        alert(`the file "${saveName}" was saved successfully!`);
       }
     }
     
@@ -162,30 +161,30 @@ function App() {
 
   // --- ניהול קבצים (פועל על החלון הפעיל) ---
   const handleSave = () => {
-    if (!activeWindow.fileName) return alert("נא להזין שם קובץ, או להשתמש ב-Save As!");
+    if (!activeWindow.fileName) return alert("Save As!");
     localStorage.setItem(activeWindow.fileName, JSON.stringify(activeWindow.textArray));
-    alert(`הקובץ "${activeWindow.fileName}" נשמר בהצלחה!`);
+    alert(`the file "${activeWindow.fileName}" was saved successfully!`);
   };
 
   const handleSaveAs = () => {
-    const newFileName = prompt("הכניסי שם חדש לשמירת הקובץ:", activeWindow.fileName || "עותק_חדש");
+    const newFileName = prompt("enter a new name for the file:", activeWindow.fileName || "Untitled");
     if (newFileName) {
       updateActiveWindow({ fileName: newFileName });
       localStorage.setItem(newFileName, JSON.stringify(activeWindow.textArray));
-      alert(`הקובץ נשמר בשם החדש: "${newFileName}"`);
+      alert(`the file was saved with the new name: "${newFileName}"`);
     }
   };
 
   const handleOpen = () => {
-    if (!fileToOpen) return alert("נא להזין שם קובץ לפתיחה בתיבת הייבוא!");
-    
+    if (!fileToOpen) return alert("please enter a file name to open in the import box!");
+
     const saved = localStorage.getItem(fileToOpen);
     
     if (saved) {
       try {
         const loadedContent = JSON.parse(saved);
         
-        // יצירת חלון חדש לגמרי
+        //add new window
         const newWin = { 
           id: Date.now(), 
           fileName: fileToOpen, 
@@ -201,10 +200,10 @@ function App() {
         setFileToOpen(""); 
         
       } catch (e) {
-        alert("שגיאה בקריאת הקובץ.");
+        alert("error reading the file.");
       }
     } else {
-      alert(`לא נמצא קובץ בשם "${fileToOpen}" ב-Local Storage.`);
+      alert(`file not found: "${fileToOpen}" in   Local Storage.`);
     }
   };
 
@@ -241,9 +240,9 @@ function App() {
                 
                 {/* שורת חיפוש */}
                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                  <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#854d0e', width: '45px' }}>חפש:</span>
+                  <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#854d0e', width: '45px' }}>search:</span>
                   <input 
-                    placeholder="תו..." 
+                    placeholder="character..." 
                     value={searchChar} 
                     onChange={(e) => setSearchChar(e.target.value)} 
                     maxLength="1" 
@@ -255,9 +254,9 @@ function App() {
 
                 {/* שורת החלפה */}
                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                  <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#854d0e', width: '45px' }}>החלף:</span>
+                  <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#854d0e', width: '45px' }}>change:</span>
                   <input 
-                    placeholder="תו..." 
+                    placeholder="character..." 
                     value={replaceChar} 
                     onChange={(e) => setReplaceChar(e.target.value)} 
                     maxLength="1" 
@@ -273,8 +272,8 @@ function App() {
 
           {/* --- צד שמאל למעלה: Undo ו-Redo --- */}
           <div style={{ display: 'flex', gap: '8px' }}>
-            <button className="undo-btn" style={{ padding: '8px 15px', fontSize: '14px' }} onClick={handleUndo} disabled={activeWindow.history.length === 0} title="בטל פעולה">↩ Undo</button>
-            <button className="undo-btn" style={{ padding: '8px 15px', fontSize: '14px' }} onClick={handleRedo} disabled={activeWindow.redoStack.length === 0} title="בצע שוב">Redo ↪</button>
+            <button className="undo-btn" style={{ padding: '8px 15px', fontSize: '14px' }} onClick={handleUndo} disabled={activeWindow.history.length === 0} title="Undo">↩ Undo</button>
+            <button className="undo-btn" style={{ padding: '8px 15px', fontSize: '14px' }} onClick={handleRedo} disabled={activeWindow.redoStack.length === 0} title="Redo">Redo ↪</button>
           </div>
 
         </div>
@@ -289,7 +288,7 @@ function App() {
             onClick={() => setActiveWindowId(win.id)}
           >
             <div className="window-header">
-              <span className="window-title">{win.fileName || "מסמך ללא שם"}</span>
+              <span className="window-title">{win.fileName || "Untitled Document"}</span>
               <button className="window-close" onClick={(e) => handleCloseWindow(win.id, e)}>✖</button>
             </div>
             <div className="window-content">
@@ -315,9 +314,9 @@ function App() {
             isUnderline={isUnderline} toggleUnderline={() => setIsUnderline(!isUnderline)}
           />
           <div className="edit-actions">
-            <button className="action-btn" onClick={selectAll}>בחר הכל</button>
-            <button className="action-btn btn-apply-sel" onClick={applyToSelected}>עדכן בחירה</button>
-            <button className="action-btn btn-apply-all" onClick={applyToAll}>עדכן הכל</button>
+            <button className="action-btn" onClick={selectAll}>Select All</button>
+            <button className="action-btn btn-apply-sel" onClick={applyToSelected}>Apply to Selection</button>
+            <button className="action-btn btn-apply-all" onClick={applyToAll}>Apply to All</button>
           </div>
         </div>
 

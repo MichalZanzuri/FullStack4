@@ -6,29 +6,29 @@ function FileMenu(props) {
       
       {/* אזור 1: ניהול החלון הפעיל (שמירה ושינוי שם) */}
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center', padding: '6px 12px', backgroundColor: '#f1f5f9', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
-        <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#334155' }}>מסמך נוכחי:</span>
+        <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#334155' }}>current file:</span>
         <input 
           type="text" 
-          placeholder="שם המסמך..." 
+          placeholder="document name..." 
           value={props.fileName}
           onChange={(e) => props.onFileNameChange(e.target.value)}
           className="file-menu-input"
           style={{ width: '120px' }}
         />
-        <button className="file-menu-button btn-save" onClick={props.onSave} title="שמור">
+        <button className="file-menu-button btn-save" onClick={props.onSave} title="Save">
           Save
         </button>
-        <button className="file-menu-button" style={{ backgroundColor: '#0ea5e9' }} onClick={props.onSaveAs} title="שמור בשם חדש">
+        <button className="file-menu-button" style={{ backgroundColor: '#0ea5e9' }} onClick={props.onSaveAs} title="Save As">
           Save As...
         </button>
       </div>
 
       {/* אזור 2: פתיחת מסמכים מהזיכרון */}
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center', padding: '6px 12px', backgroundColor: '#e0e7ff', borderRadius: '8px', border: '1px solid #c7d2fe' }}>
-        <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#3730a3' }}>ייבוא קובץ:</span>
+        <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#3730a3' }}>import file:</span>
         <input 
           type="text" 
-          placeholder="חפש שם בזיכרון..." 
+          placeholder="search for file name..." 
           value={props.fileToOpen}
           onChange={(e) => props.onFileToOpenChange(e.target.value)}
           className="file-menu-input"
