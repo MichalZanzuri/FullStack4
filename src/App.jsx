@@ -32,20 +32,20 @@ function App() {
   const handleAuth = () => {
     const uName = usernameInput.trim();
     const pWord = passwordInput.trim();
-    if (!uName || !pWord) return alert("נא להזין שם משתמש וסיסמה!");
+    if (!uName || !pWord) return alert("please enter both username and password!");
     const usersDB = JSON.parse(localStorage.getItem("app_users_db") || "{}");
 
     if (isLoginMode) {
       if (usersDB[uName] && usersDB[uName] === pWord) {
         setCurrentUser(uName); setUsernameInput(""); setPasswordInput("");
-      } else alert("שם משתמש או סיסמה שגויים. נסי שוב!");
+      } else alert("Invalid username or password. Please try again.");
     } else {
-      if (usersDB[uName]) alert("שם המשתמש הזה כבר תפוס, אנא בחרי שם אחר או עברי למסך ההתחברות.");
+      if (usersDB[uName]) alert("This username is already taken, please choose a different one or go to the login page.");
       else {
         usersDB[uName] = pWord; 
         localStorage.setItem("app_users_db", JSON.stringify(usersDB));
         setCurrentUser(uName); setUsernameInput(""); setPasswordInput("");
-        alert("החשבון נוצר בהצלחה! ברוכה הבאה למערכת.");
+        alert("The account was created successfully! Welcome to the system.");
       }
     }
   };
@@ -54,30 +54,30 @@ function App() {
     return (
       <div className="login-wrapper">
         <div className="login-box">
-          <h2 className="login-title">מערכת עריכת טקסטים</h2>
+          <h2 className="login-title">Text Editing System</h2>
           <p className="login-subtitle">
-            {isLoginMode ? 'התחברות לחשבון קיים' : 'יצירת חשבון חדש'}
+            {isLoginMode ? 'Login to Existing Account' : 'Create New Account'}
           </p>
           <input 
             type="text" 
-            placeholder="שם משתמש" 
+            placeholder="Username" 
             value={usernameInput}
             onChange={(e) => setUsernameInput(e.target.value)}
             className="login-input"
           />
           <input 
             type="password" 
-            placeholder="סיסמה" 
+            placeholder="Password" 
             value={passwordInput}
             onChange={(e) => setPasswordInput(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter') handleAuth(); }}
             className="login-input"
           />
           <button className="btn-primary login-btn-full" onClick={handleAuth}>
-            {isLoginMode ? 'היכנסי למערכת' : 'הרשמה למערכת'}
+            {isLoginMode ? 'Login' : 'Sign Up'}
           </button>
           <button className="link-btn" onClick={() => { setIsLoginMode(!isLoginMode); setUsernameInput(""); setPasswordInput(""); }}>
-            {isLoginMode ? 'אין לך חשבון? לחצי כאן להרשמה' : 'יש לך כבר חשבון? לחצי כאן להתחברות'}
+            {isLoginMode ? 'Don\'t have an account? Click here to sign up' : 'Already have an account? Click here to login'}
           </button>
         </div>
       </div>
@@ -179,11 +179,11 @@ function App() {
   return (
     <div className="app-container">
       
-      {/* באנר עליון */}
+      {/*banner*/}
       <header className="modern-banner">
         <div className="banner-right">
-          <span className="banner-title">המסמך שלי</span>
-          <span className="banner-subtitle">מחוברת כעת: {currentUser}</span>
+          <span className="banner-title">My Document</span>
+          <span className="banner-subtitle">Welcome {currentUser}</span>
         </div>
 
         <div className="banner-left">
@@ -193,9 +193,9 @@ function App() {
             onOpenClick={() => setShowOpenModal(true)} 
           />
           <button className="btn-primary" onClick={() => setShowNewModal(true)}>
-            + חלון חדש
+            + New
           </button>
-          <button className="btn-primary" onClick={handleLogout} title="התנתק">
+          <button className="btn-primary" onClick={handleLogout} title="logout">
             <span className="material-symbols-outlined">logout</span>
           </button>
         </div>
@@ -204,15 +204,15 @@ function App() {
       {/* סרגל כלים משני (חיפוש ו-Undo) */}
       <div className="secondary-toolbar">
         <div className="search-replace-pill">
-          <span className="sr-label">חפש:</span>
-          <input placeholder="תו" value={searchChar} onChange={(e) => setSearchChar(e.target.value)} maxLength="1" className="sr-input" />
-          <button className="btn-primary" onClick={handleSearch}>חפש</button>
+          <span className="sr-label">Search:</span>
+          <input placeholder="Character" value={searchChar} onChange={(e) => setSearchChar(e.target.value)} maxLength="1" className="sr-input" />
+          <button className="btn-primary" onClick={handleSearch}>Search</button>
           
           <div className="sr-divider"></div>
           
-          <span className="sr-label">החלף:</span>
-          <input placeholder="תו" value={replaceChar} onChange={(e) => setReplaceChar(e.target.value)} maxLength="1" className="sr-input" />
-          <button className="btn-primary" onClick={handleReplace}>החלף</button>
+          <span className="sr-label">Replace:</span>
+          <input placeholder="Character" value={replaceChar} onChange={(e) => setReplaceChar(e.target.value)} maxLength="1" className="sr-input" />
+          <button className="btn-primary" onClick={handleReplace}>Replace</button>
         </div>
 
         <div style={{ display: 'flex', gap: '8px' }}>
@@ -225,12 +225,12 @@ function App() {
         </div>
       </div>
 
-      {/* מרחב החלונות */}
+      {/* Workspace */}
       <div className="windows-workspace">
         {windows.map((win) => (
           <div key={win.id} className={`window-frame ${win.id === activeWindowId ? 'window-active' : ''}`} onClick={() => setActiveWindowId(win.id)}>
             <div className="window-header">
-              <span className="window-title">{win.fileName || "מסמך ללא שם"}</span>
+              <span className="window-title">{win.fileName || "Document without a name"}</span>
               <button className="window-close" onClick={(e) => handleCloseWindow(win.id, e)}>✖</button>
             </div>
             <div className="window-content">
@@ -245,7 +245,7 @@ function App() {
         ))}
       </div>
 
-      {/* קונסולה תחתונה */}
+      {/* Bottom Console */}
       <div className="bottom-console">
         <div className="style-controls-wrapper">
           <StyleControls 
@@ -265,14 +265,14 @@ function App() {
         <Keyboard onKeyPress={handleKeyPress} onDelete={handleDeleteChar} onDeleteWord={handleDeleteWord} onClear={handleClearAll} language={language} onChangeLanguage={setLanguage} />
       </div>
 
-      {/* מודאל פתיחת קובץ */}
+      {/* Open File Modal */}
       {showOpenModal && (
         <div className="modal-overlay" onClick={() => setShowOpenModal(false)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <h3 className="modal-title">המסמכים השמורים של {currentUser}</h3>
+            <h3 className="modal-title">Saved Documents of {currentUser}</h3>
             <div className="file-list">
               {getUserFiles().length === 0 ? (
-                <p className="empty-state">התיקייה ריקה</p>
+                <p className="empty-state">The folder is empty</p>
               ) : (
                 getUserFiles().map(file => (
                   <button key={file} className="file-item" onClick={() => handleOpenSpecificFile(file)}>
@@ -282,31 +282,31 @@ function App() {
                 ))
               )}
             </div>
-            <button className="modal-close-btn" onClick={() => setShowOpenModal(false)}>ביטול</button>
+            <button className="modal-close-btn" onClick={() => setShowOpenModal(false)}>Cancel</button>
           </div>
         </div>
       )}
 
-      {/* מודאל מסמך חדש */}
+      {/* New Document Modal */}
       {showNewModal && (
         <div className="modal-overlay" onClick={() => setShowNewModal(false)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <h3 className="modal-title">בחירת תבנית למסמך חדש</h3>
+            <h3 className="modal-title">Select a Template for the New Document</h3>
             <div className="template-grid">
-              <button className="template-card" onClick={() => handleCreateTemplate("מסמך ריק", "")}>
+              <button className="template-card" onClick={() => handleCreateTemplate("Document without a name", "")}>
                 <span className="material-symbols-outlined template-icon icon-draft">draft</span>
-                <span>מסמך ריק</span>
+                <span>Document without a name</span>
               </button>
-              <button className="template-card" onClick={() => handleCreateTemplate("מכתב רשמי", "לכבוד:\n\nהנדון: \n\nא.ג.נ,\n\n\n\nבברכה,\n")}>
+              <button className="template-card" onClick={() => handleCreateTemplate("Official Letter", "Dear:\n\nRegarding: \n\nSincerely,\n")}>
                 <span className="material-symbols-outlined template-icon icon-mail">mail</span>
-                <span>מכתב רשמי</span>
+                <span>Official Letter</span>
               </button>
-              <button className="template-card" onClick={() => handleCreateTemplate("רשימת מטלות", "מטלות להיום:\n- \n- \n- \n")}>
+              <button className="template-card" onClick={() => handleCreateTemplate("Task List", "Tasks for today:\n- \n- \n- \n")}>
                 <span className="material-symbols-outlined template-icon icon-check">checklist</span>
-                <span>רשימת מטלות</span>
+                <span>Task List</span>
               </button>
             </div>
-            <button className="modal-close-btn" onClick={() => setShowNewModal(false)}>ביטול</button>
+            <button className="modal-close-btn" onClick={() => setShowNewModal(false)}>Cancel</button>
           </div>
         </div>
       )}

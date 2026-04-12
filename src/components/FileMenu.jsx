@@ -3,17 +3,22 @@ import React from 'react';
 function FileMenu(props) {
   return (
     <div className="file-menu-container">
-      <button className="btn-primary" onClick={props.onSave} title="שמור">
-        שמור <span className="material-symbols-outlined" style={{fontVariationSettings: "'FILL' 1"}}>save</span>
+      
+      <button className="btn-primary" onClick={props.onSave} title="Save">
+        <span className="material-symbols-outlined" style={{fontVariationSettings: "'FILL' 1"}}>save</span>
+        Save
       </button>
 
-      <button className="btn-primary" onClick={props.onSaveAs} title="שמירה בשם">
-        שמירה בשם <span className="material-symbols-outlined">save_as</span>
+      <button className="btn-secondary" onClick={props.onSaveAs} title="Save As">
+        <span className="material-symbols-outlined">edit_document</span>
+        Save As
       </button>
 
-      <button className="btn-primary" onClick={props.onOpenClick} title="פתח מסמך">
-        פתח <span className="material-symbols-outlined">folder_open</span>
+      <button className="btn-secondary" onClick={props.onOpenClick} title="Open Document">
+        <span className="material-symbols-outlined">folder_open</span>
+        Open Document
       </button>
+
     </div>
   );
 }
