@@ -19,7 +19,6 @@ function StyleControls(props) {
         <option value="'Comic Sans MS', cursive">Comic Sans</option>
         <option value="Impact, sans-serif">Impact</option>
         <option value="'Lucida Console', monospace">Lucida Console</option>
-        {/* --- פונטים חדשים שהוספנו --- */}
         <option value="'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">Segoe UI</option>
         <option value="'Trebuchet MS', Helvetica, sans-serif">Trebuchet MS</option>
         <option value="Helvetica, Arial, sans-serif">Helvetica</option>
@@ -27,8 +26,6 @@ function StyleControls(props) {
         <option value="'Palatino Linotype', 'Book Antiqua', Palatino, serif">Palatino</option>
         <option value="'Courier', monospace">Courier</option>
         <option value="'Brush Script MT', cursive">Brush Script</option>
-        
-        {/* --- פונטים שמותאמים גם לעברית קלאסית --- */}
         <option value="'David', serif">David (דוד)</option>
         <option value="'Frank Ruehl', serif">Frank Ruehl (פרנק ריל)</option>
         <option value="'Miriam', sans-serif">Miriam (מרים)</option>
@@ -38,9 +35,9 @@ function StyleControls(props) {
       <input type="color" value={props.textColor} onChange={(e) => props.onColorChange(e.target.value)} className="color-picker" />
 
       <div className="size-controls">
-        <button onClick={() => props.onSizeChange(-2)}>-</button>
+        <button className="size-btn" onClick={() => props.onSizeChange(-2)}>-</button>
         <span className="size-display">{props.textSize}</span>
-        <button onClick={() => props.onSizeChange(2)}>+</button>
+        <button className="size-btn" onClick={() => props.onSizeChange(2)}>+</button>
       </div>
 
       <div className="format-group">

@@ -5,19 +5,14 @@ import FileMenu from './components/FileMenu';
 import './App.css';
 
 function App() {
-  // --- חלק ד': ניהול משתמשים עם סיסמה ---
   const [currentUser, setCurrentUser] = useState(""); 
-  
-  // סטייטים למסך ההתחברות
   const [usernameInput, setUsernameInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [isLoginMode, setIsLoginMode] = useState(true);
 
-  // סטייטים לחלונות קופצים (Modals) החדשים
   const [showOpenModal, setShowOpenModal] = useState(false);
   const [showNewModal, setShowNewModal] = useState(false);
 
-  // כל חלון מחזיק את הטקסט, ההיסטוריה ושם הקובץ שלו
   const [windows, setWindows] = useState([
     { id: Date.now(), fileName: "", textArray: [], history: [], redoStack: [] }
   ]);
@@ -27,7 +22,6 @@ function App() {
   const [searchChar, setSearchChar] = useState("");
   const [replaceChar, setReplaceChar] = useState("");
 
-  // כלי העיצוב 
   const [textColor, setTextColor] = useState("#000000");
   const [textSize, setTextSize] = useState(24);
   const [fontFamily, setFontFamily] = useState("Arial, sans-serif");
@@ -35,7 +29,6 @@ function App() {
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderline, setIsUnderline] = useState(false);
 
-  // --- לוגיקת אימות משתמשים ---
   const handleAuth = () => {
     const uName = usernameInput.trim();
     const pWord = passwordInput.trim();
@@ -57,21 +50,33 @@ function App() {
     }
   };
 
-  // --- מסך התחברות/הרשמה ---
   if (!currentUser) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', backgroundColor: '#f0f9ff', fontFamily: 'Arial' }}>
-        <div style={{ padding: '40px', backgroundColor: 'white', borderRadius: '12px', boxShadow: '0 4px 10px rgba(0,0,0,0.1)', textAlign: 'center', borderTop: '5px solid #0ea5e9', width: '300px' }}>
-          <h2 style={{ color: '#0369a1', marginBottom: '5px' }}>מערכת עריכת טקסטים</h2>
-          <p style={{ marginBottom: '25px', color: '#64748b', fontWeight: 'bold' }}>
+      <div className="login-wrapper">
+        <div className="login-box">
+          <h2 className="login-title">מערכת עריכת טקסטים</h2>
+          <p className="login-subtitle">
             {isLoginMode ? 'התחברות לחשבון קיים' : 'יצירת חשבון חדש'}
           </p>
-          <input type="text" placeholder="שם משתמש" value={usernameInput} onChange={(e) => setUsernameInput(e.target.value)} style={{ padding: '10px', width: '100%', boxSizing: 'border-box', borderRadius: '6px', border: '1px solid #cbd5e1', marginBottom: '15px', textAlign: 'center', fontSize: '15px' }} />
-          <input type="password" placeholder="סיסמה" value={passwordInput} onChange={(e) => setPasswordInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') handleAuth(); }} style={{ padding: '10px', width: '100%', boxSizing: 'border-box', borderRadius: '6px', border: '1px solid #cbd5e1', marginBottom: '20px', textAlign: 'center', fontSize: '15px' }} />
-          <button onClick={handleAuth} style={{ padding: '10px', width: '100%', backgroundColor: '#0ea5e9', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', fontSize: '16px', marginBottom: '15px' }}>
+          <input 
+            type="text" 
+            placeholder="שם משתמש" 
+            value={usernameInput}
+            onChange={(e) => setUsernameInput(e.target.value)}
+            className="login-input"
+          />
+          <input 
+            type="password" 
+            placeholder="סיסמה" 
+            value={passwordInput}
+            onChange={(e) => setPasswordInput(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') handleAuth(); }}
+            className="login-input"
+          />
+          <button className="btn-primary login-btn-full" onClick={handleAuth}>
             {isLoginMode ? 'היכנסי למערכת' : 'הרשמה למערכת'}
           </button>
-          <button onClick={() => { setIsLoginMode(!isLoginMode); setUsernameInput(""); setPasswordInput(""); }} style={{ background: 'none', border: 'none', color: '#3b82f6', textDecoration: 'underline', cursor: 'pointer', fontSize: '13px' }}>
+          <button className="link-btn" onClick={() => { setIsLoginMode(!isLoginMode); setUsernameInput(""); setPasswordInput(""); }}>
             {isLoginMode ? 'אין לך חשבון? לחצי כאן להרשמה' : 'יש לך כבר חשבון? לחצי כאן להתחברות'}
           </button>
         </div>
@@ -92,7 +97,6 @@ function App() {
     updateActiveWindow({ textArray: newArr, history: newHistory, redoStack: [] });
   };
 
-  // --- יצירת חלון מתוך תבנית (Modal) ---
   const handleCreateTemplate = (templateName, templateContentStr) => {
     const textArray = templateContentStr.split('').map(char => ({
       char, color: textColor, size: `${textSize}px`, font: fontFamily, bold: isBold, italic: isItalic, underline: isUnderline, selected: false
@@ -120,7 +124,6 @@ function App() {
     if (activeWindowId === idToClose) setActiveWindowId(newWindows[0].id);
   };
 
-  // פעולות עריכה
   const handleUndo = () => { if (activeWindow.history.length === 0) return; const previousState = activeWindow.history[activeWindow.history.length - 1]; updateActiveWindow({ history: activeWindow.history.slice(0, -1), redoStack: [...activeWindow.redoStack, activeWindow.textArray], textArray: previousState }); };
   const handleRedo = () => { if (activeWindow.redoStack.length === 0) return; const nextState = activeWindow.redoStack[activeWindow.redoStack.length - 1]; updateActiveWindow({ redoStack: activeWindow.redoStack.slice(0, -1), history: [...activeWindow.history, activeWindow.textArray], textArray: nextState }); };
   const handleSearch = () => { if (!searchChar) return; updateActiveWindow({ textArray: activeWindow.textArray.map(item => ({ ...item, selected: item.char === searchChar })) }); };
@@ -134,7 +137,6 @@ function App() {
   const applyToSelected = () => updateTextWithHistory(activeWindow.textArray.map(item => item.selected ? { ...item, color: textColor, size: `${textSize}px`, font: fontFamily, bold: isBold, italic: isItalic, underline: isUnderline, selected: false } : item ));
   const applyToAll = () => updateTextWithHistory(activeWindow.textArray.map(item => ({ ...item, color: textColor, size: `${textSize}px`, font: fontFamily, bold: isBold, italic: isItalic, underline: isUnderline, selected: false })));
 
-  // שמירה וייבוא
   const handleSave = () => {
     if (!activeWindow.fileName) return handleSaveAs();
     localStorage.setItem(`${currentUser}_${activeWindow.fileName}`, JSON.stringify(activeWindow.textArray));
@@ -150,7 +152,6 @@ function App() {
     }
   };
 
-  // שליפת קבצים של המשתמש בלבד
   const getUserFiles = () => {
     const files = [];
     for (let i = 0; i < localStorage.length; i++) {
@@ -162,7 +163,6 @@ function App() {
     return files;
   };
 
-  // פתיחת קובץ ספציפי מהחלון הקופץ
   const handleOpenSpecificFile = (fileName) => {
     const saved = localStorage.getItem(`${currentUser}_${fileName}`);
     if (saved) {
@@ -179,65 +179,53 @@ function App() {
   return (
     <div className="app-container">
       
-      {/* -------------------- הבאנר העליון החדש -------------------- */}
+      {/* באנר עליון */}
       <header className="modern-banner">
-        {/* ימין: תפריט, כותרת, ושם משתמש */}
         <div className="banner-right">
-          <button className="banner-icon-btn"><span className="material-symbols-outlined">menu</span></button>
           <span className="banner-title">המסמך שלי</span>
           <span className="banner-subtitle">מחוברת כעת: {currentUser}</span>
         </div>
 
-        {/* שמאל: כפתורי פעולה והגדרות/התנתקות */}
         <div className="banner-left">
           <FileMenu 
             onSave={handleSave} 
             onSaveAs={handleSaveAs} 
             onOpenClick={() => setShowOpenModal(true)} 
           />
-          <button className="btn-new-doc" onClick={() => setShowNewModal(true)}>
+          <button className="btn-primary" onClick={() => setShowNewModal(true)}>
             + חלון חדש
           </button>
-          <button className="banner-icon-btn" title="התנתק" onClick={handleLogout}>
+          <button className="btn-primary" onClick={handleLogout} title="התנתק">
             <span className="material-symbols-outlined">logout</span>
           </button>
         </div>
       </header>
 
-      {/* -------------------- סרגל כלים משני (חיפוש ו-Undo) -------------------- */}
-      {/* -------------------- סרגל כלים משני (חיפוש ו-Undo) -------------------- */}
+      {/* סרגל כלים משני (חיפוש ו-Undo) */}
       <div className="secondary-toolbar">
-        
-        {/* שורת חיפוש והחלפה בעיצוב הגלולה החדש */}
         <div className="search-replace-pill">
           <span className="sr-label">חפש:</span>
           <input placeholder="תו" value={searchChar} onChange={(e) => setSearchChar(e.target.value)} maxLength="1" className="sr-input" />
-          <button className="btn-pill btn-search-pill" onClick={handleSearch}>
-            חפש <span className="material-symbols-outlined" style={{fontSize: '18px'}}>search</span>
-          </button>
+          <button className="btn-primary" onClick={handleSearch}>חפש</button>
           
           <div className="sr-divider"></div>
           
           <span className="sr-label">החלף:</span>
           <input placeholder="תו" value={replaceChar} onChange={(e) => setReplaceChar(e.target.value)} maxLength="1" className="sr-input" />
-          <button className="btn-pill btn-replace-pill" onClick={handleReplace}>
-            החלף <span className="material-symbols-outlined" style={{fontSize: '18px'}}>find_replace</span>
-          </button>
+          <button className="btn-primary" onClick={handleReplace}>החלף</button>
         </div>
 
-        {/* כפתורי Undo / Redo מעודכנים */}
         <div style={{ display: 'flex', gap: '8px' }}>
-          <button className="undo-btn" onClick={handleUndo} disabled={activeWindow.history.length === 0} title="Undo">
+          <button className="btn-primary" onClick={handleUndo} disabled={activeWindow.history.length === 0} title="Undo">
             <span className="material-symbols-outlined">undo</span> Undo
           </button>
-          <button className="undo-btn" onClick={handleRedo} disabled={activeWindow.redoStack.length === 0} title="Redo">
+          <button className="btn-primary" onClick={handleRedo} disabled={activeWindow.redoStack.length === 0} title="Redo">
             Redo <span className="material-symbols-outlined">redo</span>
           </button>
         </div>
-
       </div>
 
-      {/* -------------------- מרחב החלונות -------------------- */}
+      {/* מרחב החלונות */}
       <div className="windows-workspace">
         {windows.map((win) => (
           <div key={win.id} className={`window-frame ${win.id === activeWindowId ? 'window-active' : ''}`} onClick={() => setActiveWindowId(win.id)}>
@@ -257,7 +245,7 @@ function App() {
         ))}
       </div>
 
-      {/* -------------------- הקונסולה למטה (עיצוב + מקלדת) -------------------- */}
+      {/* קונסולה תחתונה */}
       <div className="bottom-console">
         <div className="style-controls-wrapper">
           <StyleControls 
@@ -269,16 +257,14 @@ function App() {
             isUnderline={isUnderline} toggleUnderline={() => setIsUnderline(!isUnderline)}
           />
           <div className="edit-actions">
-            <button className="action-btn" onClick={selectAll}>Select All</button>
-            <button className="action-btn btn-apply-sel" onClick={applyToSelected}>Apply to Selection</button>
-            <button className="action-btn btn-apply-all" onClick={applyToAll}>Apply to All</button>
+            <button className="btn-primary" onClick={selectAll}>Select All</button>
+            <button className="btn-primary" onClick={applyToSelected}>Apply to Selection</button>
+            <button className="btn-primary" onClick={applyToAll}>Apply to All</button>
           </div>
         </div>
         <Keyboard onKeyPress={handleKeyPress} onDelete={handleDeleteChar} onDeleteWord={handleDeleteWord} onClear={handleClearAll} language={language} onChangeLanguage={setLanguage} />
       </div>
 
-      {/* -------------------- חלונות קופצים (Modals) -------------------- */}
-      
       {/* מודאל פתיחת קובץ */}
       {showOpenModal && (
         <div className="modal-overlay" onClick={() => setShowOpenModal(false)}>
@@ -286,38 +272,41 @@ function App() {
             <h3 className="modal-title">המסמכים השמורים של {currentUser}</h3>
             <div className="file-list">
               {getUserFiles().length === 0 ? (
-                <p style={{ textAlign: 'center', color: '#64748b', padding: '20px' }}>התיקייה ריקה</p>
+                <p className="empty-state">התיקייה ריקה</p>
               ) : (
                 getUserFiles().map(file => (
                   <button key={file} className="file-item" onClick={() => handleOpenSpecificFile(file)}>
-                    <span className="material-symbols-outlined" style={{fontSize: '18px', color: '#0284c7'}}>description</span> 
+                    <span className="material-symbols-outlined file-item-icon">description</span> 
                     {file}
                   </button>
                 ))
               )}
             </div>
-            <button className="btn-close-modal" onClick={() => setShowOpenModal(false)}>ביטול</button>
+            <button className="modal-close-btn" onClick={() => setShowOpenModal(false)}>ביטול</button>
           </div>
         </div>
       )}
 
-      {/* מודאל מסמך חדש מתוך תבנית */}
+      {/* מודאל מסמך חדש */}
       {showNewModal && (
         <div className="modal-overlay" onClick={() => setShowNewModal(false)}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <h3 className="modal-title">בחירת תבנית למסמך חדש</h3>
             <div className="template-grid">
               <button className="template-card" onClick={() => handleCreateTemplate("מסמך ריק", "")}>
-                <span className="material-symbols-outlined" style={{fontSize: '32px', color: '#64748b'}}>draft</span><br/>מסמך ריק
+                <span className="material-symbols-outlined template-icon icon-draft">draft</span>
+                <span>מסמך ריק</span>
               </button>
               <button className="template-card" onClick={() => handleCreateTemplate("מכתב רשמי", "לכבוד:\n\nהנדון: \n\nא.ג.נ,\n\n\n\nבברכה,\n")}>
-                <span className="material-symbols-outlined" style={{fontSize: '32px', color: '#0284c7'}}>mail</span><br/>מכתב רשמי
+                <span className="material-symbols-outlined template-icon icon-mail">mail</span>
+                <span>מכתב רשמי</span>
               </button>
               <button className="template-card" onClick={() => handleCreateTemplate("רשימת מטלות", "מטלות להיום:\n- \n- \n- \n")}>
-                <span className="material-symbols-outlined" style={{fontSize: '32px', color: '#10b981'}}>checklist</span><br/>רשימת מטלות
+                <span className="material-symbols-outlined template-icon icon-check">checklist</span>
+                <span>רשימת מטלות</span>
               </button>
             </div>
-            <button className="btn-close-modal" onClick={() => setShowNewModal(false)}>ביטול</button>
+            <button className="modal-close-btn" onClick={() => setShowNewModal(false)}>ביטול</button>
           </div>
         </div>
       )}

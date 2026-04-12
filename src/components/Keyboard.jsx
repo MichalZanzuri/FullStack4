@@ -76,13 +76,13 @@ function Keyboard(props) {
           {row.map((char, charIndex) => {
             let flexValue = 1;
             let bgColor = '#ffffff';
-            let textColor = '#1c313b';
+            let textColor = '#1f2937';
 
             if (char === 'SPACE') flexValue = 3.5;
-            if (char === 'ENTER') { bgColor = '#006571'; textColor = 'white'; flexValue = 1.2; }
-            if (char === 'CLEAR') { bgColor = '#b31b25'; textColor = 'white'; flexValue = 1.2; }
+            if (char === 'ENTER') { bgColor = '#3b82f6'; textColor = 'white'; flexValue = 1.2; }
+            if (char === 'CLEAR') { bgColor = '#ef4444'; textColor = 'white'; flexValue = 1.2; }
             if (['DEL', 'DEL WORD', 'LANG', 'EMOJI', '?123', '=\\<', 'ABC'].includes(char)) { 
-              bgColor = '#c2e2f2'; 
+              bgColor = '#d1d5db'; 
               flexValue = (char === 'DEL WORD') ? 1.6 : 1.1; 
             }
 

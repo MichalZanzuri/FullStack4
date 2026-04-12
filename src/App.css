@@ -1,19 +1,10 @@
-/* ייבוא הפונטים והאייקונים החדשים */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
-
-:root {
-  --primary: #006571;
-  --primary-container: #58e7fb;
-  --secondary: #a83206;
-  --bg-color: #edf8ff;
-  --surface: #ffffff;
-  --surface-variant: #c2e2f2;
-  --surface-high: #c9e7f6;
-  --text-main: #1c313b;
-  --text-muted: #495f69;
-  --error: #b31b25;
-  --font-body: 'Be Vietnam Pro', sans-serif;
-  --font-head: 'Plus Jakarta Sans', sans-serif;
+/* =========================================
+   הגדרות בסיס ומכולות ראשיות
+========================================= */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f0f9ff;
 }
 
 .app-container {
@@ -22,86 +13,266 @@
   height: 100vh;
   margin: 0;
   padding: 0;
-  background-color: var(--bg-color);
-  color: var(--text-main);
-  font-family: var(--font-body);
+  background-color: #f0f9ff;
   direction: rtl;
   overflow: hidden;
 }
 
-.top-bar {
-  padding: 15px 20px;
-  background-color: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--surface-variant);
-  box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+/* =========================================
+   כפתור אחיד לכל המערכת (גרדיאנט טורקיז)
+========================================= */
+.btn-primary {
+  /* הגרדיאנט המדויק מהתמונה שהעלית */
+  background: linear-gradient(90deg, #1c8b9d 0%, #46d6e8 100%);
+  color: white;
+  border: none;
+  border-radius: 20px; /* מעוגל לגמרי כמו בתמונה */
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 10px rgba(70, 214, 232, 0.3); /* הצללה תואמת לצבע */
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(90deg, #157282 0%, #3bc1d3 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(70, 214, 232, 0.4);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+.btn-primary:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-primary .material-symbols-outlined {
+  font-size: 20px;
+}
+
+/* =========================================
+   מסך התחברות
+========================================= */
+.login-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f0f9ff;
+}
+
+.login-box {
+  padding: 40px;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  text-align: center;
+  border-top: 6px solid #2eaab9; /* הותאם לצבע הטורקיז */
+  width: 320px;
+}
+
+.login-title {
+  color: #2eaab9;
+  margin-bottom: 5px;
+  font-size: 24px;
+}
+
+.login-subtitle {
+  margin-bottom: 25px;
+  color: #64748b;
+  font-weight: bold;
+}
+
+.login-input {
+  padding: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 15px;
+  outline: none;
+  background-color: #f8fafc;
+}
+
+.login-input:focus {
+  border-color: #2eaab9;
+  background-color: #ffffff;
+}
+
+.login-btn-full {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 12px;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: #2eaab9;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+/* =========================================
+   באנר עליון וסרגלי כלים
+========================================= */
+.modern-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 15px 24px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  border-bottom: 1px solid #e2e8f0;
   z-index: 10;
 }
 
-.top-bar-controls {
+.banner-right {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  width: 100%;
+  align-items: center;
+  gap: 15px;
 }
 
-/* סביבת העבודה המרובת חלונות */
+.banner-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+.banner-subtitle {
+  font-size: 12px;
+  color: #1c8b9d;
+  background-color: #e6f7f9;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+.banner-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.secondary-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 24px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* =========================================
+   חיפוש והחלפה (Search & Replace)
+========================================= */
+.search-replace-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  padding: 6px 12px;
+  border-radius: 30px;
+}
+
+.sr-label {
+  font-size: 13px;
+  font-weight: bold;
+  color: #475569;
+}
+
+.sr-input {
+  width: 45px;
+  text-align: center;
+  padding: 6px;
+  border-radius: 20px;
+  border: 1px solid #cbd5e1;
+  outline: none;
+}
+
+.sr-input:focus {
+  border-color: #2eaab9;
+}
+
+.sr-divider {
+  width: 1px;
+  height: 24px;
+  background-color: #cbd5e1;
+  margin: 0 5px;
+}
+
+/* =========================================
+   מרחב החלונות (Workspace)
+========================================= */
 .windows-workspace {
   flex: 1;
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
-  padding: 30px;
-  background-color: var(--bg-color);
+  gap: 20px;
+  padding: 20px;
+  background-color: #f1f5f9;
   overflow-y: auto;
   align-content: flex-start;
-  padding-bottom: 250px; /* מקום למקלדת */
 }
 
-/* עיצוב כל חלון */
 .window-frame {
-  width: 520px;
-  height: 380px;
-  background-color: var(--surface);
-  border-radius: 20px;
-  box-shadow: 0 8px 24px rgba(28, 49, 59, 0.08);
+  width: 500px;
+  height: 350px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border: 2px solid transparent;
+  border: 3px solid transparent;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
   opacity: 0.85;
 }
 
-/* כשהחלון פעיל (נבחר) */
 .window-frame.window-active {
-  border-color: var(--primary-container);
+  border-color: #46d6e8;
   opacity: 1;
   transform: scale(1.02);
-  box-shadow: 0 16px 40px rgba(28, 49, 59, 0.12);
+  box-shadow: 0 12px 20px rgba(70, 214, 232, 0.15);
 }
 
 .window-header {
-  background-color: var(--surface);
-  border-bottom: 1px solid var(--surface-variant);
-  padding: 12px 20px;
+  background-color: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 12px 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .window-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--primary);
-  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: bold;
+  color: #334155;
 }
 
 .window-close {
   background: none;
   border: none;
-  color: var(--error);
+  color: #ef4444;
   font-size: 16px;
   cursor: pointer;
   border-radius: 50%;
@@ -118,47 +289,122 @@
 }
 
 .window-content {
-  padding: 20px;
+  padding: 15px;
   flex: 1;
   overflow-y: auto;
   white-space: pre-wrap;
   word-wrap: break-word;
-  line-height: 1.8;
-  font-size: 18px;
+  line-height: 1.5;
 }
 
-/* עיצוב לתו נבחר */
 .char-selected {
-  background-color: #ffc4b3;
-  border-bottom: 2px solid var(--secondary);
+  background-color: #fef08a;
+  border-bottom: 2px solid #eab308;
   border-radius: 2px;
 }
 
+/* =========================================
+   קונסולה תחתונה (סרגל עיצוב)
+========================================= */
 .bottom-console {
   width: 100%;
-  background-color: #dff4ff;
-  border-top: 1px solid #c2e2f2;
+  background-color: white;
+  border-top: 1px solid #e2e8f0;
   padding: 15px 0 0 0;
-  border-radius: 30px 30px 0 0;
-  box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
-  position: relative;
   z-index: 20;
 }
 
 .style-controls-wrapper {
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 15px;
   margin-bottom: 10px;
 }
 
-/* keyboard styles */
+.style-controls-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  direction: ltr;
+}
+
+.font-select {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+}
+
+.color-picker {
+  width: 30px;
+  height: 30px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.size-controls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #f8fafc;
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+}
+
+.size-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  color: #475569;
+}
+
+.size-display {
+  font-weight: bold;
+  min-width: 24px;
+  text-align: center;
+}
+
+.format-group {
+  display: flex;
+  gap: 5px;
+}
+
+.format-btn {
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.format-btn.active {
+  background: linear-gradient(90deg, #1c8b9d 0%, #46d6e8 100%);
+  color: white;
+  border-color: #1c8b9d;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+  border-right: 2px solid #e2e8f0;
+  padding-right: 15px;
+}
+
+/* =========================================
+   מקלדת (צבעים מקוריים נשמרו)
+========================================= */
 .keyboard-container {
   display: flex;
   flex-direction: column;
-  padding: 10px 20px 20px 20px;
+  background-color: #e5e7eb;
+  padding: 10px;
   width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
   box-sizing: border-box;
   gap: 8px;
   direction: ltr;
@@ -166,23 +412,22 @@
 
 .keyboard-row {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   justify-content: center;
   width: 100%;
 }
 
 .keyboard-key {
-  height: 48px;
+  height: 45px;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: 600;
-  font-family: var(--font-body);
+  font-weight: bold;
   transition: all 0.05s;
-  box-shadow: 0 2px 0px rgba(0,0,0,0.1);
+  box-shadow: 0 3px 0px rgba(0,0,0,0.2);
 }
 
 .keyboard-key:active {
@@ -190,217 +435,19 @@
   box-shadow: none;
 }
 
-/* FileMenu */
+/* =========================================
+   תפריט קבצים פנימי
+========================================= */
 .file-menu-container {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  direction: ltr;
-}
-
-.file-menu-input {
-  padding: 8px 12px;
-  border-radius: 20px;
-  border: 1px solid var(--surface-variant);
-  font-size: 14px;
-  outline: none;
-  font-family: var(--font-body);
-}
-
-.file-menu-input:focus {
-  border-color: var(--primary);
-}
-
-.file-menu-button {
-  padding: 8px 20px;
-  font-size: 14px;
-  font-weight: bold;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  box-shadow: 0 2px 0px rgba(0,0,0,0.1);
-  transition: all 0.05s;
-  color: white; 
-  font-family: var(--font-body);
-}
-
-.file-menu-button:active {
-  transform: translateY(2px);
-  box-shadow: none;
-}
-
-.btn-save { background-color: var(--primary); }
-.btn-open { background-color: var(--secondary); }
-
-/* סרגל כפתורי פעולה */
-.edit-actions {
-  display: flex;
-  gap: 8px;
-  margin-right: 20px;
-  border-right: 2px solid var(--surface-variant);
-  padding-right: 15px;
-}
-
-.action-btn {
-  padding: 8px 16px;
-  font-size: 13px;
-  font-weight: bold;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  background-color: var(--surface);
-  color: var(--primary);
-  box-shadow: 0 2px 0px rgba(0,0,0,0.05);
-  transition: all 0.1s;
-  font-family: var(--font-body);
-}
-.action-btn:active { transform: translateY(2px); box-shadow: none; }
-
-.btn-apply-sel { background-color: var(--primary-container); color: var(--text-main); } 
-.btn-apply-all { background-color: #ffc4b3; color: var(--text-main); } 
-
-.undo-btn {
-  background: var(--surface-variant);
-  color: var(--text-main);
-  border: none;
-  padding: 8px 15px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: bold;
-  font-family: var(--font-body);
-}
-
-.undo-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-.style-controls-container {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  direction: ltr;
-  background: var(--surface);
-  padding: 8px 20px;
-  border-radius: 30px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-
-.font-select { padding: 6px 12px; border-radius: 8px; border: 1px solid var(--surface-variant); font-family: var(--font-body); }
-.color-picker { width: 32px; height: 32px; border: none; padding: 0; cursor: pointer; border-radius: 50%; overflow: hidden; }
-.size-controls { display: flex; align-items: center; gap: 5px; background: var(--bg-color); padding: 4px 10px; border-radius: 8px; }
-.size-display { font-weight: bold; min-width: 24px; text-align: center; }
-.format-btn { background: var(--bg-color); border: none; border-radius: 8px; padding: 6px 12px; cursor: pointer; font-weight: bold; color: var(--text-main); }
-.format-btn.active { background: var(--primary); color: white; }
-
-/* ==============================================================
-   עיצובים חדשים לבאנר ולחלונות הקופצים (Modals)
-============================================================== */
-
-/* הבאנר העליון */
-.modern-banner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #f0fbff; /* תכלת ממש בהיר כמו בתמונה */
-  border-top: 5px solid #6c45af; /* הפס הסגול העליון */
-  padding: 12px 24px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  border-bottom: 1px solid #e0f2fe;
-}
-
-.banner-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.banner-title {
-  font-size: 22px;
-  font-weight: 800;
-  color: #164e63; /* כחול כהה */
-}
-
-.banner-subtitle {
-  font-size: 12px;
-  color: #0284c7;
-  background-color: #e0f2fe;
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-weight: bold;
-}
-
-.banner-icon-btn {
-  background: none;
-  border: none;
-  color: #0369a1;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.banner-left {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-/* תפריט הקבצים החדש */
-.modern-file-menu {
   display: flex;
   align-items: center;
   gap: 10px;
   direction: rtl;
 }
 
-.btn-pill {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  border: none;
-  transition: all 0.2s;
-}
-
-.btn-save-pill {
-  background: linear-gradient(135deg, #2dd4bf, #0891b2);
-  color: white;
-  box-shadow: 0 4px 6px rgba(6, 182, 212, 0.2);
-}
-
-.btn-action-pill {
-  background-color: #dbeafe;
-  color: #475569;
-}
-
-.btn-action-pill:hover {
-  background-color: #bae6fd;
-}
-
-.btn-new-doc {
-  background-color: #10b981;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  padding: 8px 16px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
-}
-
-/* סרגל כלים משני */
-.secondary-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 24px;
-  background: #ffffff;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-/* עיצוב חלונות קופצים (Modals) */
+/* =========================================
+   חלונות קופצים (Modals) מעודכנים
+========================================= */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -409,17 +456,18 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(3px);
 }
 
 .modal-content {
   background: white;
   padding: 30px;
   border-radius: 20px;
-  width: 450px;
+  width: 480px;
   max-width: 90%;
   box-shadow: 0 20px 40px rgba(0,0,0,0.2);
   direction: rtl;
+  text-align: center;
 }
 
 .modal-title {
@@ -427,11 +475,11 @@
   color: #1e293b;
   border-bottom: 2px solid #f1f5f9;
   padding-bottom: 15px;
-  font-size: 20px;
+  font-size: 22px;
 }
 
 .file-list {
-  max-height: 300px;
+  max-height: 280px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -440,25 +488,37 @@
 }
 
 .file-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
   text-align: right;
-  padding: 12px 15px;
+  padding: 15px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: bold;
   color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .file-item:hover {
-  background: #f0f9ff;
-  border-color: #7dd3fc;
-  transform: translateX(-5px);
+  background: #e6f7f9;
+  border-color: #46d6e8;
+  transform: translateX(-3px);
+}
+
+.file-item-icon {
+  color: #1c8b9d;
+  font-size: 24px;
+}
+
+.empty-state {
+  text-align: center;
+  color: #64748b;
+  padding: 30px;
+  font-size: 16px;
 }
 
 .template-grid {
@@ -469,7 +529,7 @@
 }
 
 .template-card {
-  padding: 20px 10px;
+  padding: 25px 10px;
   text-align: center;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -478,16 +538,28 @@
   transition: all 0.2s;
   font-weight: bold;
   color: #475569;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
 .template-card:hover {
-  background: #f0f9ff;
-  border-color: #7dd3fc;
+  background: #e6f7f9;
+  border-color: #46d6e8;
   transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(70, 214, 232, 0.2);
 }
 
-.btn-close-modal {
+.template-icon {
+  font-size: 36px;
+}
+
+.icon-draft { color: #64748b; }
+.icon-mail { color: #0284c7; }
+.icon-check { color: #1c8b9d; }
+
+.modal-close-btn {
   width: 100%;
   padding: 12px;
   background: #f1f5f9;
@@ -496,97 +568,11 @@
   cursor: pointer;
   font-weight: bold;
   color: #64748b;
-  margin-top: 10px;
+  margin-top: 15px;
+  font-size: 16px;
+  transition: background 0.2s;
 }
 
-.btn-close-modal:hover {
+.modal-close-btn:hover {
   background: #e2e8f0;
-}
-
-/* ==============================================================
-   עיצוב חדש לשורת חיפוש והחלפה (תואם לכפתורי הבאנר)
-============================================================== */
-
-.search-replace-pill {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: #f0f9ff; /* רקע תכלת עדין */
-  border: 1px solid #bae6fd;
-  padding: 6px 12px;
-  border-radius: 30px; /* צורת גלולה */
-}
-
-.sr-label {
-  font-size: 14px;
-  font-weight: bold;
-  color: #0369a1;
-}
-
-.sr-input {
-  width: 45px;
-  text-align: center;
-  padding: 6px;
-  border-radius: 20px;
-  border: 1px solid #e0f2fe;
-  outline: none;
-  font-family: inherit;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
-}
-
-.sr-input:focus {
-  border-color: #38bdf8;
-}
-
-.btn-search-pill {
-  background-color: #38bdf8;
-  color: white;
-}
-
-.btn-search-pill:hover {
-  background-color: #0284c7;
-}
-
-.btn-replace-pill {
-  background-color: #818cf8; /* סגול-כחול להבדיל מהחיפוש */
-  color: white;
-}
-
-.btn-replace-pill:hover {
-  background-color: #4f46e5;
-}
-
-.sr-divider {
-  width: 1px;
-  height: 24px;
-  background-color: #bae6fd;
-  margin: 0 5px;
-}
-
-/* ==============================================================
-   שדרוג לכפתורי ה-Undo/Redo למראה מודרני מעוגל
-============================================================== */
-
-.undo-btn {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  background: #f1f5f9;
-  color: #475569;
-  border: 1px solid #e2e8f0;
-  padding: 8px 16px;
-  border-radius: 20px; /* צורת גלולה */
-  cursor: pointer;
-  font-weight: bold;
-  font-family: inherit;
-  transition: all 0.2s;
-}
-
-.undo-btn:hover:not(:disabled) {
-  background: #e2e8f0;
-  color: #0f172a;
-}
-
-.undo-btn .material-symbols-outlined {
-  font-size: 18px;
 }
