@@ -1,5 +1,4 @@
 import React from 'react';
-// לא לשכוח לוודא שה-CSS מיובא באפליקציה (הוא מיובא דרך App.jsx)
 
 function Keyboard(props) {
   const layouts = {
@@ -57,7 +56,7 @@ function Keyboard(props) {
 
   const handleKeyClick = (char) => {
     if (char === 'DEL') props.onDelete();
-    else if (char === 'DEL WORD') props.onDeleteWord(); // הפעלת הפונקציה החדשה
+    else if (char === 'DEL WORD') props.onDeleteWord();
     else if (char === 'CLEAR') props.onClear();
     else if (char === 'LANG') props.onChangeLanguage(props.language === 'he' ? 'en' : 'he');
     else if (char === 'EMOJI') props.onChangeLanguage('emoji');
@@ -77,14 +76,14 @@ function Keyboard(props) {
           {row.map((char, charIndex) => {
             let flexValue = 1;
             let bgColor = '#ffffff';
-            let textColor = '#1f2937';
+            let textColor = '#1c313b';
 
             if (char === 'SPACE') flexValue = 3.5;
-            if (char === 'ENTER') { bgColor = '#3b82f6'; textColor = 'white'; flexValue = 1.2; }
-            if (char === 'CLEAR') { bgColor = '#ef4444'; textColor = 'white'; flexValue = 1.2; }
+            if (char === 'ENTER') { bgColor = '#006571'; textColor = 'white'; flexValue = 1.2; }
+            if (char === 'CLEAR') { bgColor = '#b31b25'; textColor = 'white'; flexValue = 1.2; }
             if (['DEL', 'DEL WORD', 'LANG', 'EMOJI', '?123', '=\\<', 'ABC'].includes(char)) { 
-              bgColor = '#d1d5db'; 
-              flexValue = (char === 'DEL WORD') ? 1.6 : 1.1; // מרווח טיפה יותר גדול לכפתור מחק מילה
+              bgColor = '#c2e2f2'; 
+              flexValue = (char === 'DEL WORD') ? 1.6 : 1.1; 
             }
 
             return (
@@ -94,12 +93,13 @@ function Keyboard(props) {
                 onClick={() => handleKeyClick(char)}
                 style={{
                   flex: flexValue,
-                  fontSize: (char.length > 1 && char !== 'DEL') ? '13px' : '20px',
+                  fontSize: (char && char.length > 1 && char !== 'DEL') ? '13px' : '20px',
                   color: textColor,
                   backgroundColor: bgColor,
+                  visibility: char ? 'visible' : 'hidden'
                 }}
               >
-                {renderKeyContent(char)}
+                {char ? renderKeyContent(char) : ''}
               </button>
             );
           })}

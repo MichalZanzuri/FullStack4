@@ -1,53 +1,164 @@
-/* App.jsx */
+/* ייבוא הפונטים והאייקונים החדשים */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary: #006571;
+  --primary-container: #58e7fb;
+  --secondary: #a83206;
+  --bg-color: #edf8ff;
+  --surface: #ffffff;
+  --surface-variant: #c2e2f2;
+  --surface-high: #c9e7f6;
+  --text-main: #1c313b;
+  --text-muted: #495f69;
+  --error: #b31b25;
+  --font-body: 'Be Vietnam Pro', sans-serif;
+  --font-head: 'Plus Jakarta Sans', sans-serif;
+}
+
 .app-container {
   display: flex;
   flex-direction: column;
   height: 100vh;
   margin: 0;
   padding: 0;
-  background-color: #f9fafb;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: var(--font-body);
   direction: rtl;
+  overflow: hidden;
 }
 
 .top-bar {
-  padding: 10px 20px;
-  background-color: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 15px 20px;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--surface-variant);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+  z-index: 10;
 }
 
-.display-area {
+.top-bar-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* סביבת העבודה המרובת חלונות */
+.windows-workspace {
   flex: 1;
-  padding: 40px;
-  background-color: #ffffff;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 30px;
+  background-color: var(--bg-color);
   overflow-y: auto;
+  align-content: flex-start;
+  padding-bottom: 250px; /* מקום למקלדת */
 }
 
-.text-content {
+/* עיצוב כל חלון */
+.window-frame {
+  width: 520px;
+  height: 380px;
+  background-color: var(--surface);
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(28, 49, 59, 0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  opacity: 0.85;
+}
+
+/* כשהחלון פעיל (נבחר) */
+.window-frame.window-active {
+  border-color: var(--primary-container);
+  opacity: 1;
+  transform: scale(1.02);
+  box-shadow: 0 16px 40px rgba(28, 49, 59, 0.12);
+}
+
+.window-header {
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--surface-variant);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.window-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary);
+  font-family: var(--font-head);
+}
+
+.window-close {
+  background: none;
+  border: none;
+  color: var(--error);
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.window-close:hover {
+  background-color: #fee2e2;
+}
+
+.window-content {
+  padding: 20px;
+  flex: 1;
+  overflow-y: auto;
   white-space: pre-wrap;
-  min-height: 100%;
-  font-family: Arial, sans-serif;
-  line-height: 1.5;
+  word-wrap: break-word;
+  line-height: 1.8;
+  font-size: 18px;
+}
+
+/* עיצוב לתו נבחר */
+.char-selected {
+  background-color: #ffc4b3;
+  border-bottom: 2px solid var(--secondary);
+  border-radius: 2px;
 }
 
 .bottom-console {
   width: 100%;
-  background-color: #e5e7eb;
-  padding: 10px 0 0 0;
+  background-color: #dff4ff;
+  border-top: 1px solid #c2e2f2;
+  padding: 15px 0 0 0;
+  border-radius: 30px 30px 0 0;
+  box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
+  position: relative;
+  z-index: 20;
 }
 
 .style-controls-wrapper {
   display: flex;
   justify-content: center;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 /* keyboard styles */
 .keyboard-container {
   display: flex;
   flex-direction: column;
-  background-color: #e5e7eb;
-  padding: 10px;
+  padding: 10px 20px 20px 20px;
   width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
   box-sizing: border-box;
   gap: 8px;
   direction: ltr;
@@ -55,26 +166,25 @@
 
 .keyboard-row {
   display: flex;
-  gap: 6px;
+  gap: 8px;
   justify-content: center;
   width: 100%;
 }
 
-/* button styles */
 .keyboard-key {
-  height: 45px;
+  height: 48px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: bold;
+  font-weight: 600;
+  font-family: var(--font-body);
   transition: all 0.05s;
-  box-shadow: 0 3px 0px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 0px rgba(0,0,0,0.1);
 }
 
-/* effect when button is pressed */
 .keyboard-key:active {
   transform: translateY(2px);
   box-shadow: none;
@@ -84,214 +194,399 @@
 .file-menu-container {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
   direction: ltr;
 }
 
 .file-menu-input {
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--surface-variant);
   font-size: 14px;
   outline: none;
+  font-family: var(--font-body);
+}
+
+.file-menu-input:focus {
+  border-color: var(--primary);
 }
 
 .file-menu-button {
-  padding: 8px 15px;
+  padding: 8px 20px;
   font-size: 14px;
   font-weight: bold;
   border: none;
-  border-radius: 8px;
+  border-radius: 20px;
   cursor: pointer;
-  box-shadow: 0 3px 0px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 0px rgba(0,0,0,0.1);
   transition: all 0.05s;
   color: white; 
+  font-family: var(--font-body);
 }
 
-/* effect when button is pressed */
 .file-menu-button:active {
   transform: translateY(2px);
   box-shadow: none;
 }
 
-/* save and open buttons */
-.btn-save {
-  background-color: #10b981; 
-}
-
-.btn-open {
-  background-color: #f59e0b; 
-}
-
-/* עיצוב לתו נבחר */
-.char-selected {
-  background-color: #fef08a;
-  border-bottom: 2px solid #eab308;
-  border-radius: 2px;
-}
+.btn-save { background-color: var(--primary); }
+.btn-open { background-color: var(--secondary); }
 
 /* סרגל כפתורי פעולה */
 .edit-actions {
   display: flex;
   gap: 8px;
   margin-right: 20px;
-  border-right: 2px solid #d1d5db;
+  border-right: 2px solid var(--surface-variant);
   padding-right: 15px;
 }
 
 .action-btn {
-  padding: 6px 12px;
+  padding: 8px 16px;
   font-size: 13px;
   font-weight: bold;
   border: none;
-  border-radius: 6px;
+  border-radius: 20px;
   cursor: pointer;
-  background-color: #ffffff;
-  box-shadow: 0 2px 0px rgba(0,0,0,0.1);
+  background-color: var(--surface);
+  color: var(--primary);
+  box-shadow: 0 2px 0px rgba(0,0,0,0.05);
   transition: all 0.1s;
+  font-family: var(--font-body);
 }
+.action-btn:active { transform: translateY(2px); box-shadow: none; }
 
-.action-btn:active { transform: translateY(1px); box-shadow: none; }
-
-.btn-apply-sel { background-color: #34d399; color: white; } /* ירוק */
-.btn-apply-all { background-color: #fbbf24; color: white; } /* צהוב-כתום */
-
-.top-bar-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
-.search-replace-bar {
-  display: flex;
-  gap: 5px;
-  background: #f3f4f6;
-  padding: 5px;
-  border-radius: 8px;
-}
-
-.search-replace-bar input {
-  width: 80px;
-  padding: 5px;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  text-align: center;
-}
-
-.search-replace-bar button {
-  padding: 5px 10px;
-  background: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 12px;
-}
+.btn-apply-sel { background-color: var(--primary-container); color: var(--text-main); } 
+.btn-apply-all { background-color: #ffc4b3; color: var(--text-main); } 
 
 .undo-btn {
-  background: #6b7280;
-  color: white;
+  background: var(--surface-variant);
+  color: var(--text-main);
   border: none;
   padding: 8px 15px;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
   font-weight: bold;
+  font-family: var(--font-body);
 }
 
-.undo-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+.undo-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .style-controls-container {
   display: flex;
   align-items: center;
   gap: 12px;
   direction: ltr;
+  background: var(--surface);
+  padding: 8px 20px;
+  border-radius: 30px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
-.font-select { padding: 5px; border-radius: 4px; }
-.color-picker { width: 30px; height: 30px; border: none; padding: 0; cursor: pointer; }
-.size-controls { display: flex; align-items: center; gap: 5px; background: white; padding: 2px 8px; border-radius: 4px; border: 1px solid #d1d5db; }
-.size-display { font-weight: bold; min-width: 20px; text-align: center; }
-.format-btn { background: white; border: 1px solid #d1d5db; border-radius: 4px; padding: 4px 10px; cursor: pointer; font-weight: bold; }
-.format-btn.active { background: #3b82f6; color: white; border-color: #2563eb; }
+.font-select { padding: 6px 12px; border-radius: 8px; border: 1px solid var(--surface-variant); font-family: var(--font-body); }
+.color-picker { width: 32px; height: 32px; border: none; padding: 0; cursor: pointer; border-radius: 50%; overflow: hidden; }
+.size-controls { display: flex; align-items: center; gap: 5px; background: var(--bg-color); padding: 4px 10px; border-radius: 8px; }
+.size-display { font-weight: bold; min-width: 24px; text-align: center; }
+.format-btn { background: var(--bg-color); border: none; border-radius: 8px; padding: 6px 12px; cursor: pointer; font-weight: bold; color: var(--text-main); }
+.format-btn.active { background: var(--primary); color: white; }
 
-/* סביבת העבודה המרובת חלונות */
-.windows-workspace {
-  flex: 1;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  padding: 20px;
-  background-color: #e2e8f0; /* רקע אפור-כחלחל לאזור העבודה */
-  overflow-y: auto;
-  align-content: flex-start;
-}
+/* ==============================================================
+   עיצובים חדשים לבאנר ולחלונות הקופצים (Modals)
+============================================================== */
 
-/* עיצוב כל חלון */
-.window-frame {
-  width: 500px;
-  height: 350px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border: 3px solid transparent;
-  transition: all 0.2s ease-in-out;
-  cursor: pointer;
-  opacity: 0.8;
-}
-
-/* כשהחלון פעיל (נבחר) */
-.window-frame.window-active {
-  border-color: #3b82f6; /* מסגרת כחולה בולטת */
-  opacity: 1;
-  transform: scale(1.02); /* קופץ קצת קדימה */
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
-}
-
-.window-header {
-  background-color: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
-  padding: 8px 12px;
+/* הבאנר העליון */
+.modern-banner {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #f0fbff; /* תכלת ממש בהיר כמו בתמונה */
+  border-top: 5px solid #6c45af; /* הפס הסגול העליון */
+  padding: 12px 24px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  border-bottom: 1px solid #e0f2fe;
 }
 
-.window-title {
-  font-size: 14px;
+.banner-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.banner-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #164e63; /* כחול כהה */
+}
+
+.banner-subtitle {
+  font-size: 12px;
+  color: #0284c7;
+  background-color: #e0f2fe;
+  padding: 4px 10px;
+  border-radius: 12px;
   font-weight: bold;
-  color: #334155;
 }
 
-.window-close {
+.banner-icon-btn {
   background: none;
   border: none;
-  color: #ef4444;
-  font-size: 16px;
+  color: #0369a1;
   cursor: pointer;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.window-close:hover {
-  background-color: #fee2e2;
+.banner-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
-.window-content {
-  padding: 15px;
-  flex: 1;
+/* תפריט הקבצים החדש */
+.modern-file-menu {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  direction: rtl;
+}
+
+.btn-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.btn-save-pill {
+  background: linear-gradient(135deg, #2dd4bf, #0891b2);
+  color: white;
+  box-shadow: 0 4px 6px rgba(6, 182, 212, 0.2);
+}
+
+.btn-action-pill {
+  background-color: #dbeafe;
+  color: #475569;
+}
+
+.btn-action-pill:hover {
+  background-color: #bae6fd;
+}
+
+.btn-new-doc {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+}
+
+/* סרגל כלים משני */
+.secondary-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 24px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* עיצוב חלונות קופצים (Modals) */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15, 23, 42, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  width: 450px;
+  max-width: 90%;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  direction: rtl;
+}
+
+.modal-title {
+  margin-top: 0;
+  color: #1e293b;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 15px;
+  font-size: 20px;
+}
+
+.file-list {
+  max-height: 300px;
   overflow-y: auto;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: right;
+  padding: 12px 15px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 15px;
+  font-weight: bold;
+  color: #334155;
+}
+
+.file-item:hover {
+  background: #f0f9ff;
+  border-color: #7dd3fc;
+  transform: translateX(-5px);
+}
+
+.template-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.template-card {
+  padding: 20px 10px;
+  text-align: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: bold;
+  color: #475569;
+}
+
+.template-card:hover {
+  background: #f0f9ff;
+  border-color: #7dd3fc;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.btn-close-modal {
+  width: 100%;
+  padding: 12px;
+  background: #f1f5f9;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #64748b;
+  margin-top: 10px;
+}
+
+.btn-close-modal:hover {
+  background: #e2e8f0;
+}
+
+/* ==============================================================
+   עיצוב חדש לשורת חיפוש והחלפה (תואם לכפתורי הבאנר)
+============================================================== */
+
+.search-replace-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #f0f9ff; /* רקע תכלת עדין */
+  border: 1px solid #bae6fd;
+  padding: 6px 12px;
+  border-radius: 30px; /* צורת גלולה */
+}
+
+.sr-label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #0369a1;
+}
+
+.sr-input {
+  width: 45px;
+  text-align: center;
+  padding: 6px;
+  border-radius: 20px;
+  border: 1px solid #e0f2fe;
+  outline: none;
+  font-family: inherit;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.sr-input:focus {
+  border-color: #38bdf8;
+}
+
+.btn-search-pill {
+  background-color: #38bdf8;
+  color: white;
+}
+
+.btn-search-pill:hover {
+  background-color: #0284c7;
+}
+
+.btn-replace-pill {
+  background-color: #818cf8; /* סגול-כחול להבדיל מהחיפוש */
+  color: white;
+}
+
+.btn-replace-pill:hover {
+  background-color: #4f46e5;
+}
+
+.sr-divider {
+  width: 1px;
+  height: 24px;
+  background-color: #bae6fd;
+  margin: 0 5px;
+}
+
+/* ==============================================================
+   שדרוג לכפתורי ה-Undo/Redo למראה מודרני מעוגל
+============================================================== */
+
+.undo-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  padding: 8px 16px;
+  border-radius: 20px; /* צורת גלולה */
+  cursor: pointer;
+  font-weight: bold;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.undo-btn:hover:not(:disabled) {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.undo-btn .material-symbols-outlined {
+  font-size: 18px;
 }
