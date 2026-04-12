@@ -5,6 +5,14 @@ import FileMenu from './components/FileMenu';
 import './App.css';
 
 function App() {
+  // --- חלק ד': ניהול משתמשים עם סיסמה ---
+  const [currentUser, setCurrentUser] = useState(""); 
+  
+  // סטייטים למסך ההתחברות
+  const [usernameInput, setUsernameInput] = useState("");
+  const [passwordInput, setPasswordInput] = useState("");
+  const [isLoginMode, setIsLoginMode] = useState(true); // true = התחברות, false = הרשמה
+
   // כל חלון מחזיק את הטקסט, ההיסטוריה ושם הקובץ שלו
   const [windows, setWindows] = useState([
     { id: Date.now(), fileName: "", textArray: [], history: [], redoStack: [] }
@@ -23,6 +31,96 @@ function App() {
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderline, setIsUnderline] = useState(false);
+
+  // --- לוגיקת אימות משתמשים ---
+  const handleAuth = () => {
+    const uName = usernameInput.trim();
+    const pWord = passwordInput.trim();
+
+    if (!uName || !pWord) {
+      return alert("נא להזין שם משתמש וסיסמה!");
+    }
+
+    // משיכת "מסד הנתונים" של המשתמשים מהזיכרון
+    const usersDB = JSON.parse(localStorage.getItem("app_users_db") || "{}");
+
+    if (isLoginMode) {
+      // ניסיון התחברות
+      if (usersDB[uName] && usersDB[uName] === pWord) {
+        setCurrentUser(uName);
+        setUsernameInput("");
+        setPasswordInput("");
+      } else {
+        alert("שם משתמש או סיסמה שגויים. נסי שוב!");
+      }
+    } else {
+      // ניסיון הרשמה
+      if (usersDB[uName]) {
+        alert("שם המשתמש הזה כבר תפוס, אנא בחרי שם אחר או עברי למסך ההתחברות.");
+      } else {
+        usersDB[uName] = pWord; // שמירת הסיסמה למשתמש
+        localStorage.setItem("app_users_db", JSON.stringify(usersDB));
+        setCurrentUser(uName);
+        setUsernameInput("");
+        setPasswordInput("");
+        alert("החשבון נוצר בהצלחה! ברוכה הבאה למערכת.");
+      }
+    }
+  };
+
+  // --- מסך התחברות/הרשמה ---
+  if (!currentUser) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', backgroundColor: '#f0f9ff', fontFamily: 'Arial' }}>
+        <div style={{ padding: '40px', backgroundColor: 'white', borderRadius: '12px', boxShadow: '0 4px 10px rgba(0,0,0,0.1)', textAlign: 'center', borderTop: '5px solid #0ea5e9', width: '300px' }}>
+          <h2 style={{ color: '#0369a1', marginBottom: '5px' }}>מערכת עריכת טקסטים</h2>
+          <p style={{ marginBottom: '25px', color: '#64748b', fontWeight: 'bold' }}>
+            {isLoginMode ? 'התחברות לחשבון קיים' : 'יצירת חשבון חדש'}
+          </p>
+          
+          <input 
+            type="text" 
+            placeholder="שם משתמש" 
+            value={usernameInput}
+            onChange={(e) => setUsernameInput(e.target.value)}
+            style={{ padding: '10px', width: '100%', boxSizing: 'border-box', borderRadius: '6px', border: '1px solid #cbd5e1', marginBottom: '15px', textAlign: 'center', fontSize: '15px' }}
+          />
+          
+          <input 
+            type="password" 
+            placeholder="סיסמה" 
+            value={passwordInput}
+            onChange={(e) => setPasswordInput(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') handleAuth(); }}
+            style={{ padding: '10px', width: '100%', boxSizing: 'border-box', borderRadius: '6px', border: '1px solid #cbd5e1', marginBottom: '20px', textAlign: 'center', fontSize: '15px' }}
+          />
+          
+          <button 
+            onClick={handleAuth}
+            style={{ padding: '10px', width: '100%', backgroundColor: '#0ea5e9', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', fontSize: '16px', marginBottom: '15px' }}>
+            {isLoginMode ? 'היכנסי למערכת' : 'הרשמה למערכת'}
+          </button>
+
+          <button 
+            onClick={() => {
+              setIsLoginMode(!isLoginMode);
+              setUsernameInput("");
+              setPasswordInput("");
+            }}
+            style={{ background: 'none', border: 'none', color: '#3b82f6', textDecoration: 'underline', cursor: 'pointer', fontSize: '13px' }}>
+            {isLoginMode ? 'אין לך חשבון? לחצי כאן להרשמה' : 'יש לך כבר חשבון? לחצי כאן להתחברות'}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // --- פונקציית התנתקות ---
+  const handleLogout = () => {
+    setCurrentUser("");
+    setWindows([{ id: Date.now(), fileName: "", textArray: [], history: [], redoStack: [] }]);
+    setFileToOpen("");
+  };
 
   // מציאת החלון הפעיל כרגע
   const activeWindow = windows.find(w => w.id === activeWindowId) || windows[0];
@@ -51,32 +149,26 @@ function App() {
 
   const handleCloseWindow = (idToClose, e) => {
     e.stopPropagation(); // מונע בחירה של החלון כשלוחצים על ה-X
-    if (windows.length === 1) return alert("cannot close the last window!"); // לא מאפשר לסגור את החלון האחרון
+    if (windows.length === 1) return alert("cannot close the last window!"); 
     
-    // מציאת החלון שאנחנו רוצים לסגור
     const winToClose = windows.find(w => w.id === idToClose);
     
-    // ההצעה לשמור את הקובץ לפני הסגירה 
     const confirmSave = window.confirm(`do you want to save "${winToClose.fileName || 'Untitled'}" before closing?`);
     
     if (confirmSave) {
       let saveName = winToClose.fileName;
-      // אם אין לקובץ שם, נבקש מהמשתמש להזין אחד
       if (!saveName) {
-        saveName = prompt("enter a name for the file:", "documento");
+        saveName = prompt("enter a name for the file:", "document");
       }
-      // save to Local Storage
       if (saveName) {
-        localStorage.setItem(saveName, JSON.stringify(winToClose.textArray));
+        localStorage.setItem(`${currentUser}_${saveName}`, JSON.stringify(winToClose.textArray));
         alert(`the file "${saveName}" was saved successfully!`);
       }
     }
     
-    // סגירת החלון בפועל
     const newWindows = windows.filter(w => w.id !== idToClose);
     setWindows(newWindows);
     
-    // אם סגרנו את החלון הפעיל, נעביר פוקוס לחלון הראשון ברשימה שנשארה
     if (activeWindowId === idToClose) {
       setActiveWindowId(newWindows[0].id);
     }
@@ -159,10 +251,10 @@ function App() {
     })));
   };
 
-  // --- ניהול קבצים (פועל על החלון הפעיל) ---
+  // --- ניהול קבצים מופרד למשתמשים ---
   const handleSave = () => {
     if (!activeWindow.fileName) return alert("Save As!");
-    localStorage.setItem(activeWindow.fileName, JSON.stringify(activeWindow.textArray));
+    localStorage.setItem(`${currentUser}_${activeWindow.fileName}`, JSON.stringify(activeWindow.textArray));
     alert(`the file "${activeWindow.fileName}" was saved successfully!`);
   };
 
@@ -170,7 +262,7 @@ function App() {
     const newFileName = prompt("enter a new name for the file:", activeWindow.fileName || "Untitled");
     if (newFileName) {
       updateActiveWindow({ fileName: newFileName });
-      localStorage.setItem(newFileName, JSON.stringify(activeWindow.textArray));
+      localStorage.setItem(`${currentUser}_${newFileName}`, JSON.stringify(activeWindow.textArray));
       alert(`the file was saved with the new name: "${newFileName}"`);
     }
   };
@@ -178,13 +270,12 @@ function App() {
   const handleOpen = () => {
     if (!fileToOpen) return alert("please enter a file name to open in the import box!");
 
-    const saved = localStorage.getItem(fileToOpen);
+    const saved = localStorage.getItem(`${currentUser}_${fileToOpen}`);
     
     if (saved) {
       try {
         const loadedContent = JSON.parse(saved);
         
-        //add new window
         const newWin = { 
           id: Date.now(), 
           fileName: fileToOpen, 
@@ -196,35 +287,34 @@ function App() {
         setWindows(prev => [...prev, newWin]);
         setActiveWindowId(newWin.id);
         
-        // מנקים את תיבת החיפוש אחרי שהקובץ נפתח בהצלחה
         setFileToOpen(""); 
         
       } catch (e) {
         alert("error reading the file.");
       }
     } else {
-      alert(`file not found: "${fileToOpen}" in   Local Storage.`);
+      alert(`file not found: "${fileToOpen}" for user "${currentUser}".`);
     }
   };
 
   return (
     <div className="app-container">
       <div className="top-bar">
-        {/* מכולה ראשית שמחלקת את המסך לצד ימין (כלים) וצד שמאל (Undo/Redo) */}
         <div className="top-bar-controls" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%', paddingBottom: '5px' }}>
           
-          {/* --- צד ימין: חלון חדש, קבצים, חיפוש והחלפה --- */}
           <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start' }}>
             
-            {/* כפתור חלון חדש (נשאר בצד ימין למעלה) */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', backgroundColor: '#f0f9ff', padding: '8px 12px', borderRadius: '8px', border: '1px solid #bae6fd' }}>
+              <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#0369a1', textAlign: 'center' }}>Hello, {currentUser}</span>
+              <button onClick={handleLogout} style={{ backgroundColor: '#ef4444', color: 'white', border: 'none', padding: '4px 10px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>Logout</button>
+            </div>
+
             <button className="action-btn" style={{ backgroundColor: '#10b981', color: 'white', height: '38px', padding: '0 15px', whiteSpace: 'nowrap' }} onClick={handleNewWindow}>
               + חלון חדש
             </button>
             
-            {/* עמודה ששמה את השמירה/ייבוא למעלה, ואת החיפוש/החלפה למטה */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               
-              {/* שורה 1: שמירה וייבוא (FileMenu) */}
               <FileMenu 
                 fileName={activeWindow.fileName} 
                 onFileNameChange={(name) => updateActiveWindow({ fileName: name })} 
@@ -235,12 +325,8 @@ function App() {
                 onOpen={handleOpen} 
               />
               
-              {/* שורה 2: בלוק חיפוש והחלפה (מתחת לקבצים) */}
-              {/* שורה 2: בלוק חיפוש והחלפה (מתחת לקבצים) */}
-              {/* החזרנו את direction: 'rtl' כדי שהטקסט יופיע משמאל והכפתור מימין */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '8px 12px', backgroundColor: '#fef9c3', borderRadius: '8px', border: '1px solid #fde047', width: '390px', alignSelf: 'flex-start', boxSizing: 'border-box', direction: 'rtl' }}>
                 
-                {/* שורת חיפוש - סדר: טקסט (שמאל) -> אינפוט (אמצע) -> כפתור (ימין) */}
                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#854d0e', flex: '0 0 60px', textAlign: 'left' }}>search:</span>
                   <input 
@@ -254,7 +340,6 @@ function App() {
                   <button className="file-menu-button" style={{ backgroundColor: '#3b82f6', padding: '0 15px', fontSize: '13px', flex: '0 0 85px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={handleSearch}>search</button>
                 </div>
 
-                {/* שורת החלפה - סדר: טקסט (שמאל) -> אינפוט (אמצע) -> כפתור (ימין) */}
                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#854d0e', flex: '0 0 60px', textAlign: 'left' }}>change:</span>
                   <input 
@@ -269,11 +354,9 @@ function App() {
                 </div>
 
               </div>
-
             </div>
           </div>
 
-          {/* --- צד שמאל למעלה: Undo ו-Redo --- */}
           <div style={{ display: 'flex', gap: '8px' }}>
             <button className="undo-btn" style={{ padding: '8px 15px', fontSize: '14px' }} onClick={handleUndo} disabled={activeWindow.history.length === 0} title="Undo">↩ Undo</button>
             <button className="undo-btn" style={{ padding: '8px 15px', fontSize: '14px' }} onClick={handleRedo} disabled={activeWindow.redoStack.length === 0} title="Redo">Redo ↪</button>
@@ -282,7 +365,6 @@ function App() {
         </div>
       </div>
 
-      {/* תצוגת החלונות */}
       <div className="windows-workspace">
         {windows.map((win) => (
           <div 
